@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+:root {
+	--accent: #5AA9E6;
+	--accent-dark: #3b89c8;
+	--text: #1f1f1f;
+	--muted: #5f6470;
+	--card-shadow: 0 14px 38px rgba(0, 0, 0, 0.12);
+	--border: #dfe4ec;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: "Poppins", "Segoe UI", sans-serif;
+	background: #f6f8fb;
+	color: var(--text);
+}
+
+.site-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 1.5rem;
+	background: #ffffff;
+	color: var(--accent);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+	font-weight: 600;
+}
+
+.page {
+	min-height: calc(100vh - 70px);
+	display: grid;
+	place-items: center;
+	padding: 1.5rem;
+}
+
+.card {
+	width: min(520px, 100%);
+	background: #ffffff;
+	border-radius: 12px;
+	box-shadow: var(--card-shadow);
+	padding: 1.75rem 1.75rem 2rem;
+}
+
+.back-row {
+	display: flex;
+	justify-content: flex-start;
+	margin-bottom: 0.5rem;
+}
+
+.back-btn {
+	border: none;
+	background: transparent;
+	font-size: 1.2rem;
+	cursor: pointer;
+	color: var(--accent-dark);
+	padding: 0.2rem 0.4rem;
+}
+
+.card h1 {
+	margin: 0 0 1rem;
+	font-size: 1.4rem;
+}
+
+.form {
+	display: grid;
+	gap: 1rem;
+}
+
+.field {
+	display: grid;
+	gap: 0.35rem;
+	font-size: 0.95rem;
+	color: var(--muted);
+}
+
+.field input[type="text"] {
+	width: 100%;
+	padding: 0.75rem 0.85rem;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	font-size: 0.95rem;
+	outline: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	background: #fff;
+}
+
+.field input:focus {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px rgba(90, 169, 230, 0.2);
+}
+
+.primary-btn {
+	width: 100%;
+	border: none;
+	border-radius: 8px;
+	background: #f47560;
+	color: #ffffff;
+	padding: 0.9rem;
+	font-weight: 700;
+	font-size: 0.95rem;
+	cursor: pointer;
+	transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.primary-btn:hover {
+	background: #e76048;
+}
+
+.primary-btn:active {
+	transform: translateY(1px);
+}
+
+@media (max-width: 520px) {
+	.card {
+		padding: 1.4rem;
+	}
+}

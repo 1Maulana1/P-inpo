@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SEWS - Toko</title>
+  <link rel="stylesheet" href="css/toko.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">SEWS</div>
+
+  <div class="search-wrap">
+    <input
+      type="text"
+      id="storeSearch"
+      placeholder="Cari di toko ini"
+      oninput="searchInStore()"
+    />
+    <button class="search-btn" type="button" onclick="searchInStore()" aria-label="search">
+      🔍
+    </button>
+  </div>
+
+  <div class="cart" title="Keranjang">
+    <span class="cart-ico">🛒</span>
+    <span id="cartCount" class="cart-count">0</span>
+  </div>
+</header>
+
+<main class="container">
+  <section class="store-hero">
+    <div class="store-card">
+      <div class="store-title">
+        <div class="store-avatar">🏪</div>
+        <div>
+          <h2 id="storeName">Nama Toko</h2>
+          <p id="storeActive" class="muted">Aktif ...</p>
+        </div>
+      </div>
+
+      <div class="store-actions">
+        <button class="btn-outline">+ Ikuti</button>
+        <button class="btn-soft">💬 Chat</button>
+      </div>
+    </div>
+
+    <div class="store-stats">
+      <div class="stat"><span>🛍 Produk:</span> <b id="storeProductsCount">0</b></div>
+      <div class="stat"><span>👤 Mengikuti:</span> <b id="storeFollowing">0</b></div>
+      <div class="stat"><span>💬 Performa Chat:</span> <b id="storeChatPerf">0%</b></div>
+
+      <div class="stat"><span>👥 Pengikut:</span> <b id="storeFollowers">0</b></div>
+      <div class="stat"><span>⭐ Penilaian:</span> <b id="storeRating">0</b></div>
+      <div class="stat"><span>🕒 Bergabung:</span> <b id="storeJoined">-</b></div>
+    </div>
+  </section>
+
+  <h2 class="section-title">Produk dari toko ini</h2>
+  <div id="storeProductList" class="grid"></div>
+</main>
+
+<script src="js/data.js"></script>
+<script src="js/toko.js"></script>
+</body>
+</html>

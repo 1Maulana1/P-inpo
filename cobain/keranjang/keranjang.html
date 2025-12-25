@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang Belanja</title>
+    <link rel="stylesheet" href="keranjang.css">
+</head>
+<body>
+
+    <header>
+        <div class="top-header"> 
+            <div class="top-left">
+                <span>netofffice · B2B Elektronik Kantor</span>
+            </div>
+
+            <div class="top-right">
+                <a href="../login/signup/signup.html">Daftar</a>
+                <span>|</span>
+                <a href="../login/login.html">Log In</a>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="logo">netofffice</div>
+            <div class="search-box"> 
+                <input type="text" placeholder="Cari elektronik kantor">
+                <button> 🔍 </button>
+            </div>
+            <div class="cart-icon">🛒</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <section class="cart-section">
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                    <a class="back-home" href="../beranda/beranda.html">← Kembali</a>
+                    <h2 style="margin: 0;">Keranjang Item (<span id="total-item"></span>)</h2>
+                </div>
+                <div id="cart-items-container"></div>
+
+                <div class="cart-footer">
+                    <button class="btn-belanja" onclick=""> 
+                        <- lanjutkan belanja
+                    </button>
+                    <p class="subtotal"> Subtotal: <span id="cart-subtotal"> Rp 0</span> </p>
+                </div>
+            </section>
+
+            <aside class="summary">
+                <h2>Ringkasan Pesanan</h2>
+                
+                <div class="summary-row">
+                    <span> Subtotal (<span id="summary-item-count"> 0 </span> Items)</span>
+                    <span id="summary-subtotal"> Rp 0</span>
+                </div>
+
+                <div class="summary-row">
+                    <span> Biaya pengiriman </span>
+                    <span id="shipping-cost">Rp 0</span>
+                </div>
+
+                <div class="summary-total">
+                    <span> Total </span>
+                    <span id="order-total">Rp 0</span>
+                </div>
+
+                <button class="btn-bayar"> Pembayaran </button>
+            </aside>
+        </div>
+    </div>
+<script src="keranjang.js"></script>
+</body>
+</html>

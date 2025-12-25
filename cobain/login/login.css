@@ -1,0 +1,288 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+:root {
+    --accent: #5AA9E6;
+    --accent-dark: #3b89c8;
+    --primary: #5AA9E6;
+    --card-shadow: 0 18px 45px rgba(0, 0, 0, 0.15);
+    --text: #1f1f1f;
+    --muted: #5f6470;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    color: var(--text);
+    background: var(--primary);
+}
+
+.back-home {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    background: #ffffff;
+    color: var(--accent);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    text-decoration: none;
+    z-index: 200;
+    border: 1px solid rgba(90, 169, 230, 0.25);
+}
+
+.back-home:hover {
+    color: var(--accent-dark);
+}
+
+.site-header {
+    background: #ffffff;
+    color: var(--accent);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.main-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2.25rem 1.25rem;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.page {
+    padding: 2.5rem 1.5rem 3rem;
+}
+
+.hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 2.5rem;
+}
+
+.hero-brand {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.brand-badge {
+    width: 240px;
+    height: 240px;
+    border: 4px solid #ffffff;
+    border-radius: 22px;
+    display: grid;
+    place-items: center;
+    box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.14);
+}
+
+.bag-icon {
+    position: relative;
+    width: 140px;
+    height: 160px;
+    border-radius: 18px;
+    background: #ffffff;
+    display: grid;
+    place-items: center;
+}
+
+.bag-handle {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 40px;
+    border: 6px solid var(--primary);
+    border-bottom: 0;
+    border-radius: 24px 24px 0 0;
+}
+
+.bag-letter {
+    font-size: 4.25rem;
+    color: var(--primary);
+    font-weight: 700;
+    z-index: 1;
+}
+
+.brand-copy h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.brand-copy p {
+    margin: 0.3rem 0 0;
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 1.75rem 1.75rem 2rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    color: var(--text);
+}
+
+.qr-btn {
+    border: 1px solid var(--accent);
+    background: #f3f8ff;
+    color: var(--accent-dark);
+    border-radius: 8px;
+    padding: 0.55rem 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.qr-btn:hover {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.login-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.input-field {
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.input-field input {
+    width: 100%;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid #d9dde7;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(90, 169, 230, 0.2);
+}
+
+.password-wrapper {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #d9dde7;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.password-field input {
+    border: none;
+    border-radius: 0;
+    padding: 0.75rem 0.85rem;
+    box-shadow: none;
+}
+
+.password-field input:focus + .toggle-password,
+.password-wrapper:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(90, 169, 230, 0.2);
+}
+
+.toggle-password {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    padding: 0 0.9rem;
+    height: 100%;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.primary-btn {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #ffffff;
+    padding: 0.85rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.primary-btn:hover {
+    background: var(--accent-dark);
+}
+
+.primary-btn:active {
+    transform: translateY(1px);
+}
+
+.links-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+}
+
+.links-row a {
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.links-row a:hover {
+    text-decoration: underline;
+}
+
+.separator {
+    color: #c5cad6;
+}
+
+@media (max-width: 960px) {
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-brand {
+        justify-content: center;
+    }
+
+    .card {
+        justify-self: center;
+        width: min(100%, 520px);
+    }
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>netofffice - Log in</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <a class="back-home" href="../beranda/beranda.html">← Kembali ke Beranda</a>
+    <header class="site-header">
+        <div class="main-header">
+            <div class="logo">netofffice</div>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="hero">
+            <div class="hero-brand">
+                <div class="brand-badge">
+                    <div class="bag-icon">
+                        <div class="bag-handle"></div>
+                        <div class="bag-letter">N</div>
+                    </div>
+                </div>
+                <div class="brand-copy">
+                    <h1>netofffice</h1>
+                    <p>Elektronik kantor lebih efisien</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Log in</h2>
+                </div>
+
+                <form class="login-form" action="#" method="post">
+                    <label class="input-field">
+                        <span>No. Handphone/Username</span>
+                        <input type="text" name="identifier" placeholder="Masukkan nomor atau username" required>
+                    </label>
+
+                    <label class="input-field password-field">
+                        <span>Password</span>
+                        <div class="password-wrapper">
+                            <input id="password" type="password" name="password" placeholder="Masukkan password" required>
+                            <button id="togglePassword" class="toggle-password" type="button" aria-label="Tampilkan password">👁</button>
+                        </div>
+                    </label>
+
+                    <button class="primary-btn" type="submit">LOG IN</button>
+
+                    <div class="links-row">
+                        <a href="./lupa password/lupapw.html">Lupa Password</a>
+                        <span class="separator">|</span>
+                        <a href="./signup/signup.html">Daftar</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="login.js"></script>
+</body>
+</html>

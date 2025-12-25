@@ -1,0 +1,35 @@
+/* Layout Khusus Halaman Bank */
+.card-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-add-card {
+    background-color: #5AA9E6; /* Warna biru */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-add-card:hover {
+    background-color: #3b89c8;
+}
+
+.bank-content {
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.empty-state {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.54); /* Warna abu-abu teks kosong */
+    font-size: 16px;
+}
+
+

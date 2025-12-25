@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Saya</title>
+    <link rel="stylesheet" href="pesanan.css">
+    <script src="pesanan.js" defer></script>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+    <header>
+        <div class="top-header"> 
+            <div class="top-left">
+                <span>netofffice · B2B Elektronik Kantor</span>
+            </div>
+
+            <div class="top-right">
+                <a href="../login/signup/signup.html">Daftar</a>
+                <span>|</span>
+                <a href="../login/login.html">Log In</a>
+            </div>
+        </div>
+
+        <div class="main-header">
+            <div class="logo">netofffice</div>
+            <div class="search-box"> 
+                <input type="text" placeholder="Cari elektronik kantor">
+                <button> 🔍 </button>
+            </div>
+            <div class="cart-icon">🛒</div>
+        </div>
+    </header>
+
+    <div class="content-wrapper">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <div class="tabs-wrapper">
+                <a class="back-home" href="../beranda/beranda.html">← Kembali</a>
+                <div id="tabs-container" class="tabs-container hide-scroll"> </div>
+            </div>
+            <div id="orders-list" class="orders-list"> </div>
+        </div>
+    </div>
+
+</body>
+</html>

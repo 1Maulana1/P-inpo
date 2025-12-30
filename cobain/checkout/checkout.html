@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Sederhana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="checkout.css">
+</head>
+<body class="pb-24 md:pb-10">
+
+    <!-- Header Sederhana -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
+            <div class="text-shopee text-2xl font-bold"><i class="fas fa-shopping-bag"></i> Checkout</div>
+            <div class="h-6 w-px bg-gray-300"></div>
+            <div class="text-gray-700">Checkout</div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 space-y-4">
+        
+        <!-- Bagian Alamat -->
+        <div class="bg-white shadow-sm rounded-sm overflow-hidden">
+            <div class="address-border"></div>
+            <div class="p-6">
+                <div class="flex items-center text-shopee mb-3">
+                    <i class="fas fa-map-marker-alt mr-2"></i>
+                    <h2 class="font-semibold">Alamat Pengiriman</h2>
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="text-sm text-gray-800">
+                        <span class="font-bold">Budi Santoso (+62) 812-3456-7890</span><br>
+                        Jl. Mawar Melati No. 123, RT 01/RW 02, Kec. Kebayoran Baru<br>
+                        Jakarta Selatan, DKI Jakarta, 12150
+                    </div>
+                    <button class="text-blue-500 text-sm font-medium hover:underline text-left md:text-right">Ubah</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian Produk -->
+        <div class="bg-white shadow-sm rounded-sm p-6">
+            <div class="flex items-center gap-2 mb-4 pb-2 border-b border-gray-100">
+                <i class="fas fa-store text-gray-500"></i>
+                <span class="font-semibold text-sm">Toko Gadget Murah</span>
+            </div>
+
+            <!-- Item Produk 1 -->
+            <div class="flex gap-4 mb-4">
+                <div class="w-20 h-20 bg-gray-200 rounded flex-shrink-0 overflow-hidden relative">
+                    <!-- Placeholder Image -->
+                    <img src="https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=150&q=80" alt="Produk" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm md:text-base text-gray-800 line-clamp-2">iPhone 13 Pro Max Case Silicone Premium - Anti Slip & Tahan Banting</h3>
+                        <p class="text-xs text-gray-500 mt-1">Variasi: Midnight Blue</p>
+                    </div>
+                    <div class="flex justify-between items-end mt-2">
+                        <span class="text-xs text-gray-500">x1</span>
+                        <span class="font-medium text-gray-800" data-price="150000">Rp150.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item Produk 2 -->
+            <div class="flex gap-4">
+                <div class="w-20 h-20 bg-gray-200 rounded flex-shrink-0 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1616410011236-7a42121dd991?w=150&q=80" alt="Produk" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm md:text-base text-gray-800 line-clamp-2">Kabel Data Type-C Fast Charging 3A Original</h3>
+                        <p class="text-xs text-gray-500 mt-1">Variasi: Hitam, 1 Meter</p>
+                    </div>
+                    <div class="flex justify-between items-end mt-2">
+                        <span class="text-xs text-gray-500">x2</span>
+                        <span class="font-medium text-gray-800" data-price="50000">Rp50.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pesan & Total per Toko -->
+            <div class="mt-4 pt-4 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="w-full md:w-1/2 flex items-center gap-2">
+                    <label class="text-sm text-gray-600 w-16">Pesan:</label>
+                    <input type="text" placeholder="Silakan tinggalkan pesan..." class="flex-1 text-sm border border-gray-300 rounded px-3 py-1.5 focus:outline-none focus:border-orange-500">
+                </div>
+                <div class="text-sm">
+                    Total Pesanan (3 Produk): <span class="text-shopee font-bold text-lg">Rp250.000</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Opsi Pengiriman -->
+        <div class="bg-white shadow-sm rounded-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-semibold text-sm md:text-base text-teal-600"><i class="fas fa-truck mr-2"></i>Opsi Pengiriman</h2>
+            </div>
+            
+            <div class="border border-gray-200 rounded p-4 bg-gray-50">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="flex-1 w-full">
+                        <select id="shipping-method" class="w-full p-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-orange-500 cursor-pointer">
+                            <option value="15000" selected>Reguler (J&T Express) - Rp15.000</option>
+                            <option value="12000">Hemat (SiCepat Halu) - Rp12.000</option>
+                            <option value="25000">Instant (Gojek) - Rp25.000</option>
+                            <option value="45000">Next Day (JNE YES) - Rp45.000</option>
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1">Estimasi tiba: 2 - 4 Januari</p>
+                    </div>
+                    <div class="font-semibold text-gray-700" id="shipping-display">Rp15.000</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voucher Sederhana -->
+        <div class="bg-white shadow-sm rounded-sm p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition">
+            <div class="flex items-center gap-2 text-gray-700">
+                <i class="fas fa-ticket-alt text-shopee"></i>
+                <span class="text-sm font-medium">Voucher Toko</span>
+            </div>
+            <div class="text-sm text-blue-500">Pilih Voucher</div>
+        </div>
+
+        <!-- Metode Pembayaran -->
+        <div class="bg-white shadow-sm rounded-sm p-6">
+            <h2 class="font-semibold text-sm md:text-base mb-4"><i class="fas fa-dollar-sign mr-2 text-yellow-500"></i>Metode Pembayaran</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <!-- COD -->
+                <label class="cursor-pointer relative">
+                    <input type="radio" name="payment" class="custom-radio sr-only" checked>
+                    <div class="border border-gray-200 rounded p-3 text-center hover:bg-gray-50 transition h-full flex items-center justify-center flex-col gap-1">
+                        <i class="fas fa-hand-holding-usd text-2xl text-gray-600"></i>
+                        <span class="text-sm font-medium text-gray-700">COD (Bayar di Tempat)</span>
+                        <div class="check-icon absolute top-2 right-2 text-shopee opacity-0 transition-opacity">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </label>
+
+                <!-- Transfer Bank -->
+                <label class="cursor-pointer relative">
+                    <input type="radio" name="payment" class="custom-radio sr-only">
+                    <div class="border border-gray-200 rounded p-3 text-center hover:bg-gray-50 transition h-full flex items-center justify-center flex-col gap-1">
+                        <i class="fas fa-university text-2xl text-gray-600"></i>
+                        <span class="text-sm font-medium text-gray-700">Transfer Bank</span>
+                        <div class="check-icon absolute top-2 right-2 text-shopee opacity-0 transition-opacity">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </label>
+
+                <!-- ShopeePay -->
+                <label class="cursor-pointer relative">
+                    <input type="radio" name="payment" class="custom-radio sr-only">
+                    <div class="border border-gray-200 rounded p-3 text-center hover:bg-gray-50 transition h-full flex items-center justify-center flex-col gap-1">
+                        <i class="fas fa-wallet text-2xl text-gray-600"></i>
+                        <span class="text-sm font-medium text-gray-700">ShopeePay</span>
+                        <div class="check-icon absolute top-2 right-2 text-shopee opacity-0 transition-opacity">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- Rincian Pembayaran -->
+        <div class="bg-white shadow-sm rounded-sm p-6 mb-20 md:mb-0">
+            <h2 class="font-semibold text-sm md:text-base mb-4"><i class="fas fa-file-invoice-dollar mr-2 text-gray-500"></i>Rincian Pembayaran</h2>
+            
+            <div class="space-y-2 text-sm text-gray-600">
+                <div class="flex justify-between">
+                    <span>Subtotal untuk Produk</span>
+                    <span>Rp250.000</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Subtotal Pengiriman</span>
+                    <span id="shipping-summary">Rp15.000</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Biaya Layanan</span>
+                    <span>Rp1.000</span>
+                </div>
+                <div class="flex justify-between pt-4 border-t border-gray-100 items-center">
+                    <span class="text-base font-semibold text-gray-800">Total Pembayaran</span>
+                    <span class="text-2xl font-bold text-shopee" id="grand-total">Rp266.000</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Bar (Mobile & Desktop) -->
+    <div class="fixed bottom-0 left-0 w-full bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] border-t border-gray-200 z-40">
+        <div class="max-w-4xl mx-auto flex justify-end items-center">
+            <!-- Hidden on very small screens, simpler view -->
+            <div class="hidden md:flex flex-col items-end mr-6 py-4">
+                <div class="text-sm text-gray-600">Total Pembayaran</div>
+                <div class="text-2xl font-bold text-shopee" id="sticky-total">Rp266.000</div>
+            </div>
+            
+            <!-- Mobile View: Just Total and Button -->
+            <div class="flex md:hidden flex-col items-end mr-4 py-2">
+                <div class="text-xs text-gray-600">Total</div>
+                <div class="text-lg font-bold text-shopee" id="sticky-total-mobile">Rp266.000</div>
+            </div>
+
+            <button onclick="placeOrder()" class="bg-shopee text-white font-medium text-sm md:text-base px-8 md:px-12 py-4 md:py-6 h-full hover:bg-orange-600 transition duration-200 rounded-none">
+                Buat Pesanan
+            </button>
+        </div>
+    </div>
+
+    <!-- Simple Modal for Success -->
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-sm w-full p-6 text-center transform scale-95 transition-transform duration-200" id="modal-content">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-2xl text-green-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Pesanan Dibuat!</h3>
+            <p class="text-gray-600 mb-6">Terima kasih telah berbelanja. Pesanan Anda sedang diproses oleh penjual.</p>
+            <button onclick="closeModal()" class="w-full bg-shopee text-white py-2 rounded font-medium hover:bg-orange-600 transition">
+                Kembali ke Beranda
+            </button>
+        </div>
+    </div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>

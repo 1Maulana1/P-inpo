@@ -1,0 +1,84 @@
+/* Styles moved from inline <style> in checkout.html */
+:root {
+    --shopee-orange: #ee4d2d;
+    --shopee-orange-dark: #d73211;
+}
+
+/* header colors to match keranjang */
+:root{
+    --header-dark: #2c3e50;
+    --accent: #5AA9E6;
+}
+
+.text-shopee { color: var(--shopee-orange); }
+.bg-shopee { background-color: var(--shopee-orange); }
+.bg-shopee:hover { background-color: var(--shopee-orange-dark); }
+.border-shopee { border-color: var(--shopee-orange); }
+
+.address-border {
+    height: 3px;
+    width: 100%;
+    background-image: repeating-linear-gradient(45deg, #F25C54, #F25C54 30px, #ffffff 30px, #ffffff 40px, #70A1D7 40px, #70A1D7 70px, #ffffff 70px, #ffffff 80px);
+}
+
+.custom-radio:checked + div {
+    border-color: var(--shopee-orange);
+    color: var(--shopee-orange);
+}
+.custom-radio:checked + div .check-icon {
+    opacity: 1;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Make the checkout header match keranjang header visuals */
+header {
+    background: linear-gradient(to right, var(--header-dark), var(--accent));
+    padding: 8px 1rem; /* reduced vertical/horizontal padding */
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header > div { /* inner container */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem; /* tighter gap */
+    max-width: 980px; /* narrower container to reduce side spacing */
+    margin: 0 auto;
+    padding: 0 8px;
+}
+
+/* treat .text-shopee as logo */
+.text-shopee {
+    font-size: 24px; /* slightly smaller */
+    font-weight: 700;
+    color: white;
+}
+
+/* right-side label */
+header .text-gray-700 { color: white; font-size: 0.95rem; }
+
+/* ensure buttons in header follow accent */
+header button, header a { color: white; }
+
+
+/* Small helpers used in the page */
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Modal animation helpers (matching original inline classes usage) */
+.scale-95 { transform: scale(.95); }
+.scale-100 { transform: scale(1); }
+
+/* Bottom bar */
+.fixed { position: fixed; }
+.bottom-0 { bottom: 0; }
+.left-0 { left: 0; }
+.w-full { width: 100%; }
+
+/* keep other layout styles from inline styles minimal — tailwind handles most */

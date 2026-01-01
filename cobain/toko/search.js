@@ -27,12 +27,10 @@ function searchProduct(){
         <img src="${p.img}" alt="${p.name}">
         <div class="pbody">
           <h4>${p.name}</h4>
-
           <div class="store-link"
                onclick="event.stopPropagation(); goToStore('${p.storeId}')">
             ${storeName}
           </div>
-
           <div class="price">${formatRupiah(p.price)}</div>
         </div>
       </div>
@@ -55,8 +53,15 @@ function updateCartBadge(){
 }
 updateCartBadge();
 
-// kalau mau tombol reset, panggil dari tombol saja (jangan auto)
-function resetCart(){
-  localStorage.removeItem("cart");
-  updateCartBadge(); // ✅ bukan updateCartCount()
-}
+
+// ✅ AUTO SEARCH DARI URL ?q=
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get("q");
+
+  if(q){
+    const input = document.getElementById("searchInput");
+    input.value = q;
+    searchProduct();
+  }
+});

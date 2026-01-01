@@ -1,5 +1,6 @@
+// ================= PARAM & STATE =================
 const params = new URLSearchParams(window.location.search);
-const storeId = params.get("store");
+const storeId = params.get("store") || params.get("id"); // ✅ TERIMA store= & id=
 
 const cartCount = document.getElementById("cartCount");
 
@@ -17,13 +18,16 @@ const storeProductList = document.getElementById("storeProductList");
 
 let storeProducts = [];
 
-function loadStore(){
-  if(!storeId || !stores[storeId]){
+// ================= LOAD STORE =================
+function loadStore() {
+  if (!storeId || !stores || !stores[storeId]) {
     storeNameEl.textContent = "Toko tidak ditemukan";
+    storeActiveEl.textContent = "-";
     return;
   }
 
   const s = stores[storeId];
+
   storeNameEl.textContent = s.name;
   storeActiveEl.textContent = s.active;
 
@@ -39,9 +43,14 @@ function loadStore(){
   renderStoreProducts(storeProducts);
 }
 
-function renderStoreProducts(list){
-  if(list.length === 0){
-    storeProductList.innerHTML = `<p style="grid-column:1/-1;margin:0;">Produk toko ini tidak ada.</p>`;
+// ================= RENDER PRODUCTS =================
+function renderStoreProducts(list) {
+  if (!list || list.length === 0) {
+    storeProductList.innerHTML = `
+      <p style="grid-column:1/-1;margin:0;color:#666;">
+        Produk toko ini belum tersedia.
+      </p>
+    `;
     return;
   }
 
@@ -56,25 +65,38 @@ function renderStoreProducts(list){
   `).join("");
 }
 
+// ================= SEARCH DI TOKO =================
+function searchInStore() {
+  const input = document.getElementById("storeSearch");
+  if (!input) return;
 
-function searchInStore(){
-  const key = document.getElementById("storeSearch").value.trim().toLowerCase();
-  if(!key){
+  const key = input.value.trim().toLowerCase();
+
+  if (!key) {
     renderStoreProducts(storeProducts);
     return;
   }
-  const filtered = storeProducts.filter(p => p.name.toLowerCase().includes(key));
+
+  const filtered = storeProducts.filter(p =>
+    p.name.toLowerCase().includes(key) ||
+    (p.desc || "").toLowerCase().includes(key)
+  );
+
   renderStoreProducts(filtered);
 }
 
-function goToDetail(productId){
+// ================= NAVIGATION =================
+function goToDetail(productId) {
   window.location.href = `detail.html?id=${encodeURIComponent(productId)}`;
 }
 
-function updateCartBadge(){
+// ================= CART BADGE =================
+function updateCartBadge() {
   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
   cartCount.textContent = cart.length;
 }
 
+// ================= INIT =================
 updateCartBadge();
 loadStore();
+  

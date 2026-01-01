@@ -1,3 +1,7 @@
+<?php
+// toko.php
+$storeId = isset($_GET['store_id']) ? (int)$_GET['store_id'] : 0;
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -9,7 +13,7 @@
 <body>
 
 <header class="topbar">
-  <div class="brand">SEWS</div>
+  <div class="brand" onclick="location.href='index.php'" style="cursor:pointer">SEWS</div>
 
   <div class="search-wrap">
     <input
@@ -60,6 +64,11 @@
   <h2 class="section-title">Produk dari toko ini</h2>
   <div id="storeProductList" class="grid"></div>
 </main>
+
+<!-- (opsional) kirim store_id dari PHP ke JS -->
+<script>
+  window.STORE_ID = <?= json_encode($storeId) ?>;
+</script>
 
 <script src="data.js"></script>
 <script src="toko.js"></script>

@@ -410,3 +410,26 @@ notificationStyles.textContent = `
     }
 `;
 document.head.appendChild(notificationStyles);
+
+// ================= SEARCH (REDIRECT KE TOKO) =================
+function searchProduct() {
+  const input = document.getElementById("searchInput");
+  if (!input) return;
+
+  const keyword = input.value.trim();
+  if (!keyword) return;
+
+  // arahkan ke halaman toko/index.html + kirim keyword
+  window.location.href = `../toko/index.html?q=${encodeURIComponent(keyword)}`;
+}
+
+// ENTER untuk search
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("searchInput");
+  if (input) {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") searchProduct();
+    });
+  }
+});
+

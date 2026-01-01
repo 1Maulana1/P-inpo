@@ -1,3 +1,6 @@
+<?php
+// search.php
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -9,7 +12,7 @@
 <body>
 
 <header class="topbar">
-  <div class="brand">SEWS</div>
+  <div class="brand" onclick="location.href='index.php'" style="cursor:pointer">SEWS</div>
 
   <div class="search-wrap">
     <input

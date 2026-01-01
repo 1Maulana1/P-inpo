@@ -22,7 +22,7 @@
         </div>
 
         <div class="main-header">
-            <div class="logo"><a class="home" href="../beranda/beranda.html">nettofice</a></div>
+            <div class="logo">netofffice</div>
             <div class="search-box"> 
                 <input type="text" placeholder="Cari elektronik kantor">
                 <button> 🔍 </button>
@@ -35,12 +35,15 @@
         <div class="content">
             <section class="cart-section">
                 <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                    <a class="back-home" href="../beranda/beranda.html">← Kembali</a>
                     <h2 style="margin: 0;">Keranjang Item (<span id="total-item"></span>)</h2>
                 </div>
                 <div id="cart-items-container"></div>
 
                 <div class="cart-footer">
-                    <a class="back-home" href="../beranda/beranda.html">← lanjut Belanja</a>
+                    <button class="btn-belanja" onclick=""> 
+                        <- lanjutkan belanja
+                    </button>
                     <p class="subtotal"> Subtotal: <span id="cart-subtotal"> Rp 0</span> </p>
                 </div>
             </section>

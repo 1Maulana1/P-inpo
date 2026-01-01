@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+body { 
+    font-family: 'Roboto', sans-serif; 
+    background-color: #F5F5F5;
+    color: #333;
+    margin: 0; padding: 0;
+}
+
+/* HEADER */
+.seller-header {
+    background: white; height: 56px; border-bottom: 1px solid #eee;
+    position: fixed; width: 100%; top: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center; padding: 0 20px;
+}
+.header-left { display: flex; align-items: center; gap: 10px; }
+.brand-text { font-size: 20px; font-weight: 500; margin-left: 8px; }
+.header-right { display: flex; align-items: center; gap: 20px; }
+.user-info { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.avatar-small { width: 32px; height: 32px; border-radius: 50%; }
+.shop-name { font-size: 14px; font-weight: 500; }
+
+/* LAYOUT */
+.main-layout { display: flex; padding-top: 56px; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+    width: 240px; background: white; border-right: 1px solid #eee;
+    position: fixed; height: 100%; overflow-y: auto; padding-bottom: 20px;
+}
+.nav-group { margin-bottom: 5px; }
+.nav-title {
+    padding: 12px 20px 5px; font-size: 12px; font-weight: bold; color: #999; text-transform: uppercase;
+}
+.nav-item {
+    display: flex; align-items: center; padding: 10px 20px; color: #555; text-decoration: none; font-size: 14px; transition: 0.2s;
+}
+.nav-item:hover { background-color: #f6f6f6; }
+.nav-item.active { color: #EE4D2D; background-color: #fdfdfd; font-weight: 500; border-right: 3px solid #EE4D2D; }
+.nav-item.active i { color: #EE4D2D; }
+.icon-width { width: 24px; text-align: center; color: #888; }
+
+/* CONTENT */
+.content-area {
+    margin-left: 240px; flex: 1; padding: 20px;
+}
+.section-container {
+    background: white; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); padding: 20px;
+}
+.section-heading { font-size: 18px; font-weight: 500; margin-bottom: 15px; }
+
+/* DASHBOARD CARDS */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+.stat-card {
+    border: 1px solid #eee; padding: 15px; text-align: center; cursor: pointer; border-radius: 4px; transition: 0.2s;
+}
+.stat-card:hover { border-color: #EE4D2D; }
+.stat-number { display: block; font-size: 24px; font-weight: bold; margin-bottom: 5px; }
+.stat-label { font-size: 12px; color: #666; }
+
+.text-blue { color: #2196F3; }
+.text-orange { color: #EE4D2D; }
+.mt-4 { margin-top: 16px; }

@@ -1,0 +1,172 @@
+<?php
+session_start();
+// include '../koneksi.php'; // Aktifkan jika sudah ada file koneksi
+
+// Logika halaman aktif untuk sidebar
+$page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Centre - Toko Berkah</title>
+    <!-- CSS Khusus Seller -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS (Opsional untuk layout cepat) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+    <!-- Header Seller -->
+    <header class="seller-header">
+        <div class="header-left">
+            <div class="logo-area">
+                <i class="fa-solid fa-bag-shopping" style="color: #EE4D2D; font-size: 24px;"></i>
+                <span class="brand-text">Seller Centre</span>
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=Toko+Berkah&background=random" class="avatar-small">
+                <span class="shop-name">Toko Berkah</span>
+            </div>
+            <i class="fa-solid fa-grid" style="color: #666; cursor: pointer;"></i>
+            <i class="fa-regular fa-bell" style="color: #666; cursor: pointer;"></i>
+        </div>
+    </header>
+
+    <!-- Layout Utama -->
+    <div class="main-layout">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Menu Dashboard -->
+            <div class="nav-group">
+                <a href="index.php?page=dashboard" class="nav-item <?php echo ($page=='dashboard') ? 'active' : ''; ?>">
+                    <i class="fa-solid fa-gauge-high icon-width"></i> Dashboard
+                </a>
+            </div>
+
+            <!-- Menu Pesanan -->
+            <div class="nav-group">
+                <div class="nav-title">Pesanan</div>
+                <a href="index.php?page=orders" class="nav-item <?php echo ($page=='orders') ? 'active' : ''; ?>">
+                    <i class="fa-solid fa-clipboard-list icon-width"></i> Pesanan Saya
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-rotate-left icon-width"></i> Pengembalian
+                </a>
+            </div>
+
+            <!-- Menu Produk -->
+            <div class="nav-group">
+                <div class="nav-title">Produk</div>
+                <a href="index.php?page=products" class="nav-item <?php echo ($page=='products') ? 'active' : ''; ?>">
+                    <i class="fa-solid fa-box icon-width"></i> Produk Saya
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-plus icon-width"></i> Tambah Produk
+                </a>
+            </div>
+
+            <!-- Menu Toko -->
+            <div class="nav-group">
+                <div class="nav-title">Toko</div>
+                <a href="index.php?page=settings" class="nav-item <?php echo ($page=='settings') ? 'active' : ''; ?>">
+                    <i class="fa-solid fa-shop icon-width"></i> Profil Toko
+                </a>
+                <!-- Link Kembali ke Profil Pembeli -->
+                <a href="../profil/profile.php" class="nav-item">
+                    <i class="fa-solid fa-user icon-width"></i> Kembali ke Profil
+                </a>
+            </div>
+        </aside>
+
+        <!-- Area Konten Utama -->
+        <main class="content-area">
+            
+            <?php if($page == 'dashboard'): ?>
+                <!-- KONTEN DASHBOARD -->
+                <div class="section-container">
+                    <h2 class="section-heading">Penting Hari Ini</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-number text-blue">4</span>
+                            <span class="stat-label">Perlu Dikirim</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number text-orange">1</span>
+                            <span class="stat-label">Pembatalan</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Pengembalian</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Produk Diblokir</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-container mt-4">
+                    <div class="flex justify-between items-center mb-4 border-b pb-2">
+                        <h2 class="section-heading mb-0">Bisnis Saya</h2>
+                        <span class="text-xs text-gray-500">Update terakhir: Hari ini 14:00</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 text-center divide-x">
+                        <div>
+                            <p class="text-gray-500 text-xs">Total Pengunjung</p>
+                            <h3 class="text-xl font-bold">1.240</h3>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-xs">Produk Dilihat</p>
+                            <h3 class="text-xl font-bold">4.502</h3>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-xs">Total Pesanan</p>
+                            <h3 class="text-xl font-bold">24</h3>
+                        </div>
+                    </div>
+                </div>
+
+            <?php elseif($page == 'products'): ?>
+                <!-- KONTEN PRODUK (Placeholder) -->
+                <div class="section-container">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="section-heading">Daftar Produk</h2>
+                        <button class="bg-orange-500 text-white px-4 py-1 rounded text-sm">Tambah Baru</button>
+                    </div>
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-3">Nama Produk</th>
+                                <th class="p-3">Harga</th>
+                                <th class="p-3">Stok</th>
+                                <th class="p-3 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-3">Kemeja Polos Pria</td>
+                                <td class="p-3">Rp 120.000</td>
+                                <td class="p-3">50</td>
+                                <td class="p-3 text-right text-blue-500 cursor-pointer">Edit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            <?php endif; ?>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

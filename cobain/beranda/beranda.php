@@ -1,91 +1,18 @@
 <?php
-// beranda.php — ambil data products & stores dari MySQL
-// Konfigurasi koneksi: gunakan environment variables bila tersedia
-$dbHost = getenv('DB_HOST') ?: '127.0.0.1';
-$dbUser = getenv('DB_USER') ?: 'root';
-$dbPass = getenv('DB_PASS') ?: '';
-$dbName = getenv('DB_NAME') ?: 'netofffice';
+session_start();
+// include 'koneksi.php'; // Hilangkan komentar jika sudah ada file koneksi database
 
-$productsJson = '[]';
-$storesJson = '{}';
-
-// Coba koneksi database secara aman; jika gagal, tetap tampilkan halaman statis
-try {
-    $mysqli = @new mysqli($dbHost, $dbUser, $dbPass, $dbName);
-    if ($mysqli && !$mysqli->connect_errno) {
-        $mysqli->set_charset('utf8mb4');
-
-        // Ambil produk aktif
-        $sqlProducts = "SELECT id, name, price, img, `desc`, store_id FROM products WHERE active = 1 ORDER BY created_at DESC LIMIT 500";
-        $products = [];
-        if ($res = $mysqli->query($sqlProducts)) {
-            while ($row = $res->fetch_assoc()) {
-                $products[] = [
-                    'id' => (int)$row['id'],
-                    'name' => $row['name'],
-                    'price' => (float)$row['price'],
-                    'img' => $row['img'],
-                    'desc' => $row['desc'],
-                    'storeId' => $row['store_id']
-                ];
-            }
-            $res->free();
-        }
-
-        // Ambil daftar toko
-        $sqlStores = "SELECT id, name, rating, active FROM stores";
-        $stores = [];
-        if ($res = $mysqli->query($sqlStores)) {
-            while ($row = $res->fetch_assoc()) {
-                $stores[$row['id']] = [
-                    'name' => $row['name'],
-                    'rating' => $row['rating'],
-                    'active' => ($row['active'] == 1) ? 'Buka' : 'Tutup'
-                ];
-            }
-            $res->free();
-        }
-
-        $mysqli->close();
-
-        $productsJson = json_encode($products, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $storesJson = json_encode($stores, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    }
-} catch (Exception $e) {
-    // ignore and fall back to empty datasets
-}
-
-// Siapkan skrip injeksi data ke JS
-$injectScriptTag = "<script>var products = $productsJson; var stores = $storesJson;</script>\n";
-
-// Muat template HTML dan sisipkan variabel JS menggantikan ../toko/data.js jika ada,
-// atau injeksikan sebelum </body> sebagai cadangan saat menampilkan.
-$templatePath = __DIR__ . '/beranda.html';
-if (file_exists($templatePath)) {
-    $template = file_get_contents($templatePath);
-    $pattern = '/<script\s+src=[\'\"]\.\.\/toko\/data\.js[\'\"]\s*><\/script>/i';
-    if (preg_match($pattern, $template)) {
-        $template = preg_replace($pattern, $injectScriptTag, $template, 1);
-    } else {
-        $template = preg_replace('/<\/body>/i', $injectScriptTag . "</body>", $template, 1);
-    }
-    // Kirim output template yang sudah disuntik data
-    header('Content-Type: text/html; charset=UTF-8');
-    echo $template;
-    return;
-}
-
-// Jika template tidak ditemukan, tampilkan minimal fallback
-header('Content-Type: text/html; charset=UTF-8');
-echo "<!doctype html><html><body><h1>Template beranda.html tidak ditemukan.</h1></body></html>";
-return;
+// Contoh logika sederhana untuk mengecek login (opsional)
+$isLoggedIn = isset($_SESSION['user_id']);
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>netofffice - Beranda</title>
+    <!-- Pastikan file CSS berada di folder yang sama atau sesuaikan path-nya -->
     <link rel="stylesheet" href="beranda.css">
 </head>
 <body>
@@ -98,7 +25,7 @@ return;
             </div>
             <div class="top-right">
                 <div class="notif-wrapper">
-                    <a class="notif-link" href="../notifikasi/notifikasi.html" aria-label="Notifikasi">🔔 Notifikasi</a>
+                    <a class="notif-link" href="../notifikasi/notifikasi.php" aria-label="Notifikasi">🔔 Notifikasi</a>
                     <div class="notif-pop">
                         <p class="notif-title">Pemberitahuan</p>
                         <ul>
@@ -108,9 +35,18 @@ return;
                         </ul>
                     </div>
                 </div>
-                <a href="../login/signup/signup.html">Daftar</a>
-                <span>|</span>
-                <a href="../login/login.html">Log In</a>
+                
+                <?php if ($isLoggedIn): ?>
+                    <!-- Tampilan jika sudah Login -->
+                    <a href="../profil/profile.php">Halo, User</a>
+                    <span>|</span>
+                    <a href="../logout.php">Logout</a>
+                <?php else: ?>
+                    <!-- Tampilan jika belum Login -->
+                    <a href="../login/signup/signup.php">Daftar</a>
+                    <span>|</span>
+                    <a href="../login/login.php">Log In</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -126,13 +62,13 @@ return;
             </div>
             
             <div class="header-actions">
-                <a href="../pesanan/pesanan.html" class="orders-link" title="Pesanan Saya">
+                <a href="../pesanan/pesanan.php" class="orders-link" title="Pesanan Saya">
                     📦 Pesanan
                 </a>
-                <a href="../profil/Profile.html" class="profile-link" title="Profil">
+                <a href="../profil/profile.php" class="profile-link" title="Profil">
                     👤 Profil
                 </a>
-                <a href="../keranjang/keranjang.html" class="cart-icon" title="Keranjang">
+                <a href="../keranjang/keranjang.php" class="cart-icon" title="Keranjang">
                     🛒 <span id="cartCount" class="badge">0</span>
                 </a>
             </div>
@@ -276,6 +212,10 @@ return;
     <!-- Chat Button -->
     <div class="chat-button" title="Hubungi CS">💬</div>
 
+    <!-- Container untuk notifikasi JS -->
+    <div id="notifikasiContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+    <!-- Scripts -->
     <script src="../toko/data.js"></script>
     <script src="beranda.js"></script>
 </body>

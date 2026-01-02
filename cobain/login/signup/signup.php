@@ -1,3 +1,33 @@
+    <?php
+    if (isset($_POST['Submit'])) {
+        include_once("test.php"); // koneksi DB
+
+    $nama   = $_POST['nama'];
+    $email  = $_POST['email'];
+    $phone  = $_POST['phone'];
+    $date   = $_POST['date'];
+    $alamat = $_POST['alamat'];
+    $gender = $_POST['gender'];
+    $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $avatar = "";
+
+    // 🔍 CEK EMAIL
+    $cek = mysqli_query($mysqli, "SELECT id FROM users WHERE email='$email'");
+    if (mysqli_num_rows($cek) > 0) {
+        echo "❌ Email sudah terdaftar";
+        exit;
+    }
+
+    // ➕ INSERT
+    $query = "
+        INSERT INTO users
+        (nama,email,phone,password_hash,gender,date,alamat,avatar)
+        VALUES
+        ('$nama','$email','$phone','$password_hash','$gender','$date','$alamat','$avatar')
+    ";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -30,12 +60,12 @@
 
 				<label class="field">
 					<span>No. Telp</span>
-					<input type="tel" name="telp" placeholder="08xxxxxxxxxx" required>
+					<input type="tel" name="telp" placeholder="08..." required>
 				</label>
 
 				<label class="field">
 					<span>Tanggal Lahir</span>
-					<input type="date" name="dob" required>
+					<input type="date" name="date" required>
 				</label>
 
 				<label class="field file-field">
@@ -47,32 +77,12 @@
 					<div class="preview" id="preview"></div>
 				</label>
 
-				<button class="primary-btn" type="submit">Simpan</button>
+				<button class="primary-btn" type="submit" name="submit">Simpan</button>
 			</form>
 		</section>
 	</main>
 
 	<script src="signup.js"></script>
-
-    <?php
-// Check If form submitted, insert form data into users table.
-if(isset($_POST['Submit'])) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $mobile = $_POST['mobile'];
-    $gender = $_POST['gender'];
-    $address = $_POST['address'];
-    $document = $_POST['document'];
-    $child = $_POST['child'];
-// include database connection file
-include_once("config.php");
-// Insert user data into table
-$result = mysqli_query($mysqli, "INSERT INTO
-users(name,email,mobile,gender,address,document,child) VALUES('$name','$email','$mobile', '$gender', '$address', '$document', '$child')");
-// Show message when user added
-echo "User added successfully. <a href='index.php'>View Users</a>";
-}
-?>
 
 </body>
 </html>

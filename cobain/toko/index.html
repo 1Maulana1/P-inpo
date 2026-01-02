@@ -7,33 +7,88 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<body>
 
-<header class="topbar">
-  <div class="brand">SEWS</div>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="top-left">
+      netofffice · B2B Elektronik Kantor
+    </div>
 
-  <div class="search-wrap">
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Cari Product"
-      oninput="searchProduct()"
-    />
-    <button class="search-btn" type="button" onclick="searchProduct()" aria-label="search">
-      🔍
-    </button>
+    <div class="top-right">
+      <span class="divider">|</span>
+      <a href="../login/signup/signup.html">Daftar</a>
+      <span>|</span>
+      <a href="../login/login.html">Log In</a>
+    </div>
   </div>
+</div>
 
-  <div class="cart" title="Keranjang">
-    <span class="cart-ico">🛒</span>
-    <span id="cartCount" class="cart-count">0</span>
+
+<!-- Header utama -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">netofffice</div>
+
+    <div class="search-wrap">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Cari elektronik kantor di SEWS"
+        oninput="searchProduct()"
+      />
+      <button class="search-btn" type="button">🔍</button>
+    </div>
+
+    <div class="topbar-right">
+      <div class="cart">
+        🛒 <span id="cartCount">0</span>
+      </div>
+    </div>
   </div>
 </header>
+
+
 
 <main class="container">
   <h2 id="hintText" class="hint">Silakan cari produk</h2>
   <div id="productList" class="grid"></div>
 </main>
 
+<!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>netofffice</h3>
+                <p>Marketplace B2B untuk elektronik kantor: printer, laptop, jaringan, dan aksesoris kerja.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Layanan</h4>
+                <a href="#">Bantuan</a>
+                <a href="#">Cara Belanja</a>
+                <a href="#">Pembayaran</a>
+                <a href="#">Pengiriman</a>
+            </div>
+            <div class="footer-section">
+                <h4>Tentang Kami</h4>
+                <a href="#">Tentang netofffice</a>
+                <a href="#">Karir</a>
+                <a href="#">Kebijakan</a>
+            </div>
+            <div class="footer-section">
+                <h4>Ikuti Kami</h4>
+                <div class="social-links">
+                    <a href="#">📘 Facebook</a>
+                    <a href="#">📸 Instagram</a>
+                    <a href="#">🐦 Twitter</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 netofffice. All rights reserved.</p>
+        </div>
+    </footer>
 <script src="data.js"></script>
 <script src="search.js"></script>
 </body>

@@ -42,9 +42,10 @@ if(!product){
           ${product.desc || "Deskripsi produk belum tersedia."}
         </p>
 
-        <div class="btn-row">
-          <button class="btn btn-primary" id="addCartBtn">+ Keranjang</button>
+        <!-- TOMBOL AKSI -->
+        <div class="btn-row btn-row-split">
           <button class="btn btn-soft" onclick="history.back()">Kembali</button>
+          <button class="btn btn-primary" id="addCartBtn">+ Keranjang</button>
         </div>
       </div>
     </div>

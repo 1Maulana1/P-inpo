@@ -8,24 +8,45 @@
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand">SEWS</div>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="top-left">
+      netofffice · B2B Elektronik Kantor
+    </div>
 
-  <div class="search-wrap">
-    <input
-      type="text"
-      id="storeSearch"
-      placeholder="Cari di toko ini"
-      oninput="searchInStore()"
-    />
-    <button class="search-btn" type="button" onclick="searchInStore()" aria-label="search">
-      🔍
-    </button>
+    <div class="top-right">
+      <span class="divider">|</span>
+      <a href="../login/signup/signup.html">Daftar</a>
+      <span>|</span>
+      <a href="../login/login.html">Log In</a>
+    </div>
   </div>
+</div>
 
-  <div class="cart" title="Keranjang">
-    <span class="cart-ico">🛒</span>
-    <span id="cartCount" class="cart-count">0</span>
+
+<!-- Header utama (DENGAN search, sejajar top bar) -->
+<header class="topbar topbar-search">
+  <div class="topbar-inner">
+
+    <div class="brand" onclick="location.href='index.html'" style="cursor:pointer;">
+      netofffice
+    </div>
+
+    <div class="search-wrap">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Cari elektronik kantor di SEWS"
+        oninput="searchProduct()"
+      />
+      <button class="search-btn" type="button">🔍</button>
+    </div>
+
+    <div class="cart" title="Keranjang">
+      🛒 <span id="cartCount">0</span>
+    </div>
+
   </div>
 </header>
 

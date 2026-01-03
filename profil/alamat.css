@@ -1,0 +1,80 @@
+/* Header & Tombol */
+.address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+
+.btn-add-address {
+    background-color: #5AA9E6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+/* List Alamat */
+.address-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 0;
+}
+
+.address-info p {
+    margin-bottom: 5px;
+}
+
+.action-link {
+    color: #5AA9E6;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.badge-primary { border: 1px solid #105431; color: #14713c; padding: 2px 5px; font-size: 12px; }
+.badge-secondary { border: 1px solid #888; color: #888; padding: 2px 5px; font-size: 12px; }
+
+.btn-set-default {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.btn-set-default:disabled { color: #ccc; cursor: not-allowed; }
+
+/* Modal Styles */
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center; align-items: center;
+}
+
+
+.modal-address {
+    background: white; padding: 30px; width: 500px; border-radius: 4px;
+}
+
+
+.form-row { display: flex; gap: 10px; margin: 15px 0; }
+.form-row input, .modal-address input, .modal-address textarea, .modal-address select {
+    width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd;
+}
+
+.map-placeholder {
+    height: 100px; background: #f9f9f9; border: 1px dashed #ccc;
+    display: flex; justify-content: center; align-items: center; margin-bottom: 15px;
+}
+
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.btn-ok { background: #3cb8da; color: white; border: none; padding: 10px 40px; }
+.btn-cancel { background: none; border: none; cursor: pointer; color: #555; }

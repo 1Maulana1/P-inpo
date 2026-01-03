@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Toko - netofffice</title>
+    <link rel="stylesheet" href="buat_toko.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-left">
+                <span>netofffice · B2B Elektronik Kantor</span>
+            </div>
+            <div class="top-right">
+                <a href="../beranda/beranda.html">Beranda</a>
+                <span>|</span>
+                <a href="Profile.html">Profil</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="buat-toko-wrapper">
+            <div class="buat-toko-header">
+                <h1>🏪 Buat Toko Baru</h1>
+                <p>Mulai berjualan elektronik kantor di netofffice dengan mengisi informasi toko Anda</p>
+            </div>
+
+            <form class="buat-toko-form" id="buatTokoForm">
+                <div class="form-section">
+                    <h3>Informasi Toko</h3>
+                    
+                    <div class="form-group">
+                        <label for="namaToko">Nama Toko <span class="required">*</span></label>
+                        <input type="text" id="namaToko" name="namaToko" placeholder="Contoh: Toko Elektronik Sejahtera" required>
+                        <small>Nama toko harus unik dan mudah diingat</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deskripsiToko">Deskripsi Toko <span class="required">*</span></label>
+                        <textarea id="deskripsiToko" name="deskripsiToko" rows="4" placeholder="Jelaskan tentang toko Anda, produk yang dijual, dan keunggulan toko" required></textarea>
+                        <small>Minimal 50 karakter</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kategoriToko">Kategori Produk Utama <span class="required">*</span></label>
+                        <select id="kategoriToko" name="kategoriToko" required>
+                            <option value="">Pilih kategori...</option>
+                            <option value="laptop">Laptop & Komputer</option>
+                            <option value="printer">Printer & Aksesoris</option>
+                            <option value="network">Perangkat Jaringan</option>
+                            <option value="mobile">Handphone & Tablet</option>
+                            <option value="peripheral">Keyboard, Mouse & Peripheral</option>
+                            <option value="storage">Storage & Memory</option>
+                            <option value="office">Alat Tulis Kantor</option>
+                            <option value="elektronik">Elektronik Umum</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Kontak & Lokasi</h3>
+                    
+                    <div class="form-group">
+                        <label for="emailToko">Email Toko <span class="required">*</span></label>
+                        <input type="email" id="emailToko" name="emailToko" placeholder="toko@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teleponToko">Nomor Telepon <span class="required">*</span></label>
+                        <input type="tel" id="teleponToko" name="teleponToko" placeholder="08xxxxxxxxxx" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alamatToko">Alamat Lengkap <span class="required">*</span></label>
+                        <textarea id="alamatToko" name="alamatToko" rows="3" placeholder="Jalan, Nomor, RT/RW, Kelurahan, Kecamatan" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="kota">Kota <span class="required">*</span></label>
+                            <input type="text" id="kota" name="kota" placeholder="Contoh: Jakarta" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="provinsi">Provinsi <span class="required">*</span></label>
+                            <input type="text" id="provinsi" name="provinsi" placeholder="Contoh: DKI Jakarta" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kodePos">Kode Pos <span class="required">*</span></label>
+                        <input type="text" id="kodePos" name="kodePos" placeholder="12345" maxlength="5" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Informasi Bank</h3>
+                    <p class="info-text">📌 Diperlukan untuk pencairan dana penjualan</p>
+                    
+                    <div class="form-group">
+                        <label for="namaBank">Nama Bank <span class="required">*</span></label>
+                        <select id="namaBank" name="namaBank" required>
+                            <option value="">Pilih bank...</option>
+                            <option value="BCA">BCA</option>
+                            <option value="Mandiri">Mandiri</option>
+                            <option value="BNI">BNI</option>
+                            <option value="BRI">BRI</option>
+                            <option value="CIMB">CIMB Niaga</option>
+                            <option value="Permata">Permata</option>
+                            <option value="BTN">BTN</option>
+                            <option value="Danamon">Danamon</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nomorRekening">Nomor Rekening <span class="required">*</span></label>
+                        <input type="text" id="nomorRekening" name="nomorRekening" placeholder="1234567890" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="namaPemilikRekening">Nama Pemilik Rekening <span class="required">*</span></label>
+                        <input type="text" id="namaPemilikRekening" name="namaPemilikRekening" placeholder="Sesuai dengan nama di buku rekening" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Syarat & Ketentuan</h3>
+                    
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="agree" name="agree" required>
+                            <span>Saya menyetujui <a href="#" target="_blank">Syarat & Ketentuan</a> dan <a href="#" target="_blank">Kebijakan Privasi</a> netofffice</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="agreeData" name="agreeData" required>
+                            <span>Data yang saya berikan adalah benar dan dapat dipertanggungjawabkan</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="window.location.href='Profile.html'">Batal</button>
+                    <button type="submit" class="btn-submit">Buat Toko</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success">
+            <div class="modal-icon">✅</div>
+            <h2>Toko Berhasil Dibuat!</h2>
+            <p>Selamat! Toko Anda telah terdaftar di netofffice.</p>
+            <p>Anda akan diarahkan ke dashboard toko dalam beberapa detik...</p>
+            <button class="btn-primary" onclick="redirectToDashboard()">Mulai Berjualan</button>
+        </div>
+    </div>
+
+    <script src="buat_toko.js"></script>
+</body>
+</html>

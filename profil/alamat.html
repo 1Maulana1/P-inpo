@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Alamat Saya</title>
+    <link rel="stylesheet" href="profile.css"> 
+    <link rel="stylesheet" href="alamat.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container top-bar-content">
+                <div class="top-left">
+                    <a href="#">Seller Centre</a>
+                    <span>|</span>
+                    <a href="#">Mulai Berjualan</a>
+                    <span>|</span>
+                    <a href="#">Download</a>
+                    <span>|</span>
+                    <a href="#">Ikuti kami di</a>
+                    <a href="#">🔵</a> <a href="#">⚪</a>
+                </div>
+            <div class="top-right">
+                <a href="#">🔔 Notifikasi</a>
+                <a href="#">❓ Bantuan</a>
+                <a href="#">🌐 Bahasa Indonesia</a>
+                <a href="#">Daftar</a>
+                <span>|</span>
+                <a href="#">Log In</a>
+            </div>
+        </div>
+    </div>
+
+    <header class="navbar">
+        <div class="container header-content">
+            <div class="logo">SEWS</div>
+            <div class="search-container">
+                <input type="text" placeholder="Cek: Diskon 110RB Pakai SPayLater">
+                <button type="submit" class="search-btn">🔍</button>
+            </div>
+            <div class="cart-icon">🛒 <span class="badge"></span></div>
+        </div>
+    </header>
+
+    <main class="container main-layout">
+        <aside class="sidebar">
+            <div class="user-brief">
+                <img src="../img/default-avatar.png" id="sidebar-avatar" class="mini-avatar">
+                <div class="user-details">
+                    <p class="username">bravesttama</p>
+                    <a href="Profile.html" class="edit-profile">✏️ Ubah Profil</a>
+                </div>
+            </div>
+
+            <nav class="menu">
+                <div class="menu-group">
+                    <div class="sidebar-item">
+                        <span class="menu-icon">👤</span> <a href="#" class="menu-parent">Akun Saya</a>
+                    </div>
+                    <ul class="submenu">
+                        <li class="sidebar-item"><a href="Profile.html">Profil</a></li>
+                        <li class="sidebar-item"><a href="bank.html">Bank & Kartu</a></li>
+                        <li class="sidebar-item active"><a href="alamat.html">Alamat</a></li>
+                        <li class="sidebar-item"><a href="#">Ubah Password</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-item">
+                    <span class="menu-icon">🔔</span> <a href="#">Notifikasi</a>
+                </div>
+            </nav>
+        </aside>
+
+        <section class="profile-card">
+            <div class="address-header">
+                <h2>Alamat Saya</h2>
+                <button class="btn-add-address" id="openModal">+ Tambah Alamat Baru</button>
+            </div>
+            <hr>
+
+            <div class="address-list">
+                <h3>Alamat</h3>
+                <div class="address-item">
+                    <div class="address-info">
+                        <p><strong>Bravestama</strong> | (+62) 813 3333 0000 <span class="action-link">Ubah</span></p>
+                        <p>Wahana pondok gede A6 nomer 1.</p>
+                        <p>WAKANDA FOREVER</p>
+                        <span class="badge-primary">Utama</span> <span class="badge-secondary">Alamat Toko</span>
+                    </div>
+                    <button class="btn-set-default" disabled>Atur sebagai utama</button>
+                </div>
+                <hr>
+                <div class="address-item">
+                    <div class="address-info">
+                        <p><strong>Kost Pak Santoso</strong> | (+62) 228 1398 9004 <span class="action-link">Ubah</span> <span class="action-link">Hapus</span></p>
+                        <p>Kost Tingki WIngki, Jalan Nglanjaran No. 78, RT.8/RW.17, Candirejo, Ngaglik</p>
+                        <p>NGAGLIK, KAB. SLEMAN, DI YOGYAKARTA, ID, 55581</p>
+                    </div>
+                    <button class="btn-set-default">Atur sebagai utama</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="addressModal" class="modal-overlay">
+        <div class="modal-address">
+            <h3>Alamat Baru</h3>
+            <div class="form-row">
+                <input type="text" placeholder="Nama Lengkap">
+                <input type="text" placeholder="Nomor Telepon">
+            </div>
+            <select><option>Provinsi, Kota, Kecamatan, Kode Pos</option></select>
+            <textarea placeholder="Nama Jalan, Gedung, No. Rumah"></textarea>
+            <input type="text" placeholder="Detail Lainnya (Cth: Blok / Unit No., Patokan)">
+            
+            <div class="map-placeholder">
+                <button>+ Tambah Lokasi</button>
+            </div>
+
+            <p>Tandai Sebagai:</p>
+            <div class="tag-buttons">
+                <button class="btn-tag">Rumah</button>
+                <button class="btn-tag">Kantor</button>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-cancel" id="closeModal">Nanti Saja</button>
+                <button class="btn-ok">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="alamat.js"></script>
+</body>
+</html>

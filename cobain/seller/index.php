@@ -69,7 +69,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
                 <a href="index.php?page=products" class="nav-item <?php echo ($page=='products') ? 'active' : ''; ?>">
                     <i class="fa-solid fa-box icon-width"></i> Produk Saya
                 </a>
-                <a href="#" class="nav-item">
+                <a href="tambah.php" class="nav-item">
                     <i class="fa-solid fa-plus icon-width"></i> Tambah Produk
                 </a>
             </div>

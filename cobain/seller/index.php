@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once("test.php");
 // include '../koneksi.php'; // Aktifkan jika sudah ada file koneksi
 
 // Logika halaman aktif untuk sidebar

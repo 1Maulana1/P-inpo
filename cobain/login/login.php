@@ -1,32 +1,37 @@
 <?php
-session_start();
-include_once("test.php");
+session_start(); // WAJIB
+ // FIX PATH
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+    include_once("test.php");
     $id = trim($_POST['identifier']);
     $password = $_POST['password'];
 
     $stmt = $mysqli->prepare(
-        "SELECT id, nama, password_hash FROM users 
-         WHERE email = ? OR phone = ? LIMIT 1"
+        "SELECT user_id, nama, password_hash 
+         FROM users 
+         WHERE email = ? OR phone = ?
+         LIMIT 1"
     );
+
     $stmt->bind_param("ss", $id, $id);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows === 1) {
+    if ($result && $result->num_rows === 1) {
         $user = $result->fetch_assoc();
 
         if (password_verify($password, $user['password_hash'])) {
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['nama'] = $user['nama'];
-            header("Location: dashboard.php");
+
+            header("Location: ../beranda/beranda.php");
             exit;
         }
     }
 
-    $error = "❌ Email/No HP atau password salah";
+    $error = "❌ Email / No HP atau password salah";
+    
 }
 ?>
 
@@ -40,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
-    <a class="back-home" href="../beranda/beranda.html">← Kembali ke Beranda</a>
+    <a class="back-home" href="../beranda/beranda.php">← Kembali ke Beranda</a>
     <header class="site-header">
         <div class="main-header">
             <div class="logo">netofffice</div>
@@ -70,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form class="login-form" action="#" method="post">
                     <label class="input-field">
                         <span>No. Handphone/Username</span>
-                        <input type="text" name="identifier" placeholder="Masukkan nomor atau username" required>
+                        <input type="text" name="identifier" placeholder="Masukkan nomor atau nama" required>
                     </label>
 
                     <label class="input-field password-field">
@@ -81,13 +86,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </label>
 
-                    <button class="primary-btn" type="submit">LOG IN</button>
+                    <button class="primary-btn" type="submit" name="login">LOG IN</button>
 
                     <div class="links-row">
                         <a href="./lupa password/lupapw.html">Lupa Password</a>
                         <span class="separator">|</span>
-                        <a href="./signup/signup.html">Daftar</a>
+                        <a href="/index.php">Daftar</a>
                     </div>
+
+                    <?php if (isset($error)) echo "<p class='error-message'>" . $error . "</p>"; ?>
                 </form>
             </div>
         </section>

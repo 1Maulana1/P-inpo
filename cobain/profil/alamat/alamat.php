@@ -19,7 +19,7 @@ $user = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alamat Saya - netofffice</title>
     <!-- CSS Utama Profile -->
-    <link rel="stylesheet" href="profile.css"> 
+    <link rel="stylesheet" href="../profile.css"> 
     <!-- CSS Khusus Halaman Alamat -->
     <link rel="stylesheet" href="alamat.css">
 </head>
@@ -35,7 +35,7 @@ $user = [
                 <a href="../notifikasi/notifikasi.php">🔔 Notifikasi</a>
                 <a href="#">❓ Bantuan</a>
                 <span style="margin: 0 5px;">|</span>
-                <a href="../logout.php" style="text-decoration: none; color: white;">Logout</a>
+                <a href="../login.php" style="text-decoration: none; color: white;">Logout</a>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@ $user = [
     <!-- Header / Navbar -->
     <header class="navbar">
         <div class="container header-content">
-            <div class="logo">netofffice</div>
+            <div class="logo"><a href="/cobain/beranda/beranda.php">netofffice</a></div>
             <div class="search-container">
                 <input type="text" placeholder="Cari elektronik kantor di netofffice">
                 <button type="submit" class="search-btn">🔍</button>
@@ -61,13 +61,11 @@ $user = [
         
         <!-- SIDEBAR -->
         <aside class="sidebar">
-            <a class="back-home" href="../beranda/beranda.php" style="text-decoration: none;">← Kembali ke Beranda</a>
-            
             <div class="user-brief">
                 <img src="<?php echo $user['avatar']; ?>" id="sidebar-avatar" class="mini-avatar" alt="Avatar">
                 <div class="user-details">
                     <p class="username"><?php echo $user['username']; ?></p>
-                    <a href="profile.php" class="edit-profile" style="text-decoration: none;">✏️ Ubah Profil</a>
+                    <a href="/profile/profile.php" class="edit-profile" style="text-decoration: none;">✏️ Ubah Profil</a>
                 </div>
             </div>
 
@@ -78,9 +76,9 @@ $user = [
                     </div>
                     <!-- PERBAIKAN DI SINI (Baris 87-90): Menambahkan text-decoration: none -->
                     <ul class="submenu">
-                        <li class="sidebar-subitem"><a href="profile.php" style="text-decoration: none;">Profil</a></li>
-                        <li class="sidebar-subitem"><a href="bank.php" style="text-decoration: none;">Bank & Kartu</a></li>
-                        <li class="sidebar-subitem active"><a href="alamat.php" style="text-decoration: none;">Alamat</a></li>
+                        <li class="sidebar-subitem"><a href="/cobain/profil/profile.php" style="text-decoration: none;">Profil</a></li>
+                        <li class="sidebar-subitem"><a href="/cobain/profil/bank/bank.php" style="text-decoration: none;">Bank & Kartu</a></li>
+                        <li class="sidebar-subitem active"><a href="/cobain/profil/alamat/alamat.php" style="text-decoration: none;">Alamat</a></li>
                     </ul>
                 </div>
                 

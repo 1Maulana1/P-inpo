@@ -1,47 +1,50 @@
+<?php
+// Jika nanti butuh logic PHP (cek login/session, ambil data dari database, dsb.),
+// bisa ditulis di bagian atas file ini sebelum HTML.
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keranjang Belanja</title>
-    <link rel="stylesheet" href="keranjang.css">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Keranjang Belanja</title>
+   <link rel="stylesheet" href="keranjang.css">
 </head>
 <body>
 
     <header>
         <div class="top-header"> 
             <div class="top-left">
-                <a href="#">Seller Centre</a>
-                <span> | </span>
-                <a href="#">Ikuti kami di</a>
-                <a href="https://www.instagram.com/informatics.uii/"> @ </a>
+                <span>netofffice · B2B Elektronik Kantor</span>
             </div>
 
             <div class="top-right">
-                <a href="#"> username </a>
+                <a href="../login/signup/signup.html">Daftar</a>
+                <span>|</span>
+                <a href="../login/login.html">Log In</a>
             </div>
         </div>
 
         <div class="main-header">
-            <div class="logo"> LOGO SEWS</div>
+            <div class="logo"><a class="home" href="../beranda/beranda.html">nettofice</a></div>
             <div class="search-box"> 
-                <input type="text" placeholder="cari produk">
-                <button> Q </button>
+                <input type="text" placeholder="Cari elektronik kantor">
+                <button> 🔍 </button>
             </div>
-            <div class="cart-icon"> CART</div>
+            <div class="cart-icon">🛒</div>
         </div>
     </header>
 
     <div class="container">
         <div class="content">
             <section class="cart-section">
-                <h2>Keranjang Item (<span id="total-item"></span>)</h2>
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                    <h2 style="margin: 0;">Keranjang Item (<span id="total-item"></span>)</h2>
+                </div>
                 <div id="cart-items-container"></div>
 
                 <div class="cart-footer">
-                    <button class="btn-belanja" onclick=""> 
-                        <- lanjutkan belanja
-                    </button>
+                    <a class="back-home" href="../beranda/beranda.html">← lanjut Belanja</a>
                     <p class="subtotal"> Subtotal: <span id="cart-subtotal"> Rp 0</span> </p>
                 </div>
             </section>

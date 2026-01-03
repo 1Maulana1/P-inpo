@@ -1,14 +1,30 @@
 <?php
 session_start();
 
-// --- 1. KONEKSI DATABASE (Sama seperti beranda.php) ---
+// --- 1. KONEKSI DATABASE YANG LEBIH ROBUST ---
 $koneksi = null;
+
+// Cek beberapa kemungkinan lokasi file koneksi
 if (file_exists('../koneksi.php')) {
     include '../koneksi.php';
-} elseif (file_exists('koneksi.php')) {
-    include 'koneksi.php';
+} elseif (file_exists('test.php')) {
+    include 'test.php';
 } else {
-    die("Error: File koneksi database tidak ditemukan.");
+    die("Error Fatal: File koneksi database tidak ditemukan. Pastikan path '../koneksi.php' benar.");
+}
+
+// PERBAIKAN UTAMA: Cek apakah variabel koneksi berhasil dibuat
+// Jika $koneksi masih null, coba cek nama variabel lain yang mungkin dipakai user ($conn atau $mysqli)
+if (!isset($koneksi) || !$koneksi) {
+    if (isset($conn) && $conn) {
+        $koneksi = $conn;
+    } elseif (isset($mysqli) && $mysqli) {
+        $koneksi = $mysqli;
+    } else {
+        die("Error Fatal: Gagal terhubung ke database. <br>
+             Penyebab: Variabel <code>\$koneksi</code> kosong atau gagal login. <br>
+             Solusi: Cek file <b>koneksi.php</b> Anda. Pastikan nama variabelnya <b>\$koneksi</b> dan username/password database benar.");
+    }
 }
 
 // --- 2. CEK LOGIN ---
@@ -30,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $price = intval($_POST['price']);
     $stock = intval($_POST['stock']);
     $specifications = mysqli_real_escape_string($koneksi, $_POST['specifications']);
+    
 
     // Validasi sederhana
     if (empty($name) || empty($price) || $category_id == 0) {
@@ -50,6 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 // --- 4. AMBIL DATA KATEGORI (UNTUK DROPDOWN) ---
 $queryCat = "SELECT * FROM categories ORDER BY name ASC";
 $resultCat = mysqli_query($koneksi, $queryCat);
+
+// Cek error query kategori
+if (!$resultCat) {
+    die("Error Query Kategori: " . mysqli_error($koneksi));
+}
 ?>
 
 <!DOCTYPE html>
@@ -63,6 +85,7 @@ $resultCat = mysqli_query($koneksi, $queryCat);
 <body>
 
     <a href="index.php" class="btn-back">← Kembali ke Dashboard</a>
+
     <div class="container">
         <h2>Tambah Produk Baru</h2>
 
@@ -109,6 +132,11 @@ $resultCat = mysqli_query($koneksi, $queryCat);
             <div class="form-group">
                 <label>Spesifikasi / Deskripsi</label>
                 <textarea name="specifications" rows="4" placeholder="Tulis spesifikasi lengkap di sini..."></textarea>
+            </div>
+
+            <div>
+                <label for="image">Gambar Produk</label>
+                <input type="file" name="image" id="image">
             </div>
 
             <button type="submit" class="btn-submit">Simpan Produk</button>

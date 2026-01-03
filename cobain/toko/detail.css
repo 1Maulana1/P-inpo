@@ -1,130 +1,10 @@
-/* ===== TOP BAR ===== */
-.top-bar{
-  background:#2f4557;           /* biru gelap */
-  height:34px;
-  display:flex;
-  align-items:center;
-  font-size:13px;
-  color:#cfd8df;
-}
-
-.top-bar-inner{
-  max-width:1300px;
-  margin:auto;
-  width:100%;
-  padding:0 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-/* kiri */
-.top-left{
-  font-weight:600;
-  letter-spacing:.2px;
-}
-
-/* kanan */
-.top-right{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.top-right a{
-  color:#fff;
-  text-decoration:none;
-  font-weight:500;
-}
-
-.top-right a:hover{
-  text-decoration:underline;
-}
-
-.top-right .divider{
-  color:#8aa0af;
-}
-/* ================= HEADER SEJAJAR TOP BAR ================= */
-
-/* header full width */
-header.topbar.topbar-shop{
-  background: linear-gradient(90deg, #1e3a5f, #5aa9e6);
-  height: 96px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-/* ini KUNCI supaya sejajar dengan .top-bar-inner */
-header.topbar.topbar-shop .topbar-inner{
-  max-width: 1300px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 20px;              /* SAMA PERSIS top-bar */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* logo */
-header.topbar.topbar-shop .brand{
-  color: #fff;
-  font-size: 36px;              /* kecilkan sesuai kebutuhan */
-  font-weight: 800;
-  letter-spacing: .5px;
-  line-height: 1;
-  cursor: pointer;
-  white-space: nowrap;
-  margin: 0;                    /* pastikan gak ada margin aneh */
-}
-
-/* cart kanan */
-header.topbar.topbar-shop .cart{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-header.topbar.topbar-shop .cart-count{
-  font-size: 16px;
-  font-weight: 700;
-}
-
-/* responsive */
-@media (max-width: 720px){
-  header.topbar.topbar-shop{
-    height: 72px;
-  }
-
-  header.topbar.topbar-shop .brand{
-    font-size: 26px;
-  }
-}
-
-
-
-/* ================= RESPONSIVE ================= */
-@media (max-width: 720px){
-  header.topbar.topbar-detail{
-    height: 72px;
-  }
-
-  header.topbar.topbar-detail .brand-center{
-    font-size: 26px;
-  }
-}
-
-/* ================= BACKGROUND HALAMAN ================= */
+/* BACKGROUND HALAMAN (Shopee-style) */
 .detail-wrap{
   background:#f5f5f5;
   padding:24px 0;
 }
 
-/* ================= KOTAK PUTIH ================= */
+/* KOTAK PUTIH UTAMA */
 .product-box{
   max-width:1200px;
   margin:0 auto;
@@ -134,7 +14,7 @@ header.topbar.topbar-shop .cart-count{
   overflow:hidden;
 }
 
-/* ================= LAYOUT DETAIL ================= */
+/* LAYOUT DETAIL */
 .detail-card{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -142,7 +22,7 @@ header.topbar.topbar-shop .cart-count{
   padding:32px;
 }
 
-/* ================= GAMBAR ================= */
+/* KOLOM GAMBAR */
 .image-col{
   display:flex;
   justify-content:center;
@@ -157,7 +37,7 @@ header.topbar.topbar-shop .cart-count{
   border-radius:8px;
 }
 
-/* ================= INFO ================= */
+/* KOLOM INFO */
 .info-col{
   display:flex;
   flex-direction:column;
@@ -190,20 +70,13 @@ header.topbar.topbar-shop .cart-count{
   margin-bottom:18px;
 }
 
-/* ================= TOMBOL AKSI ================= */
+/* TOMBOL */
 .btn-row{
   display:flex;
-  align-items:center;
   gap:12px;
-  margin-top:18px;
+  flex-wrap:wrap;
 }
 
-/* + Keranjang ke kanan */
-.btn-row .btn-primary{
-  margin-left:auto;
-}
-
-/* ================= BUTTON STYLE ================= */
 .btn{
   border:0;
   border-radius:4px;
@@ -217,15 +90,11 @@ header.topbar.topbar-shop .cart-count{
   color:#fff;
 }
 
-.btn-primary:hover{
-  background:#d84325;
-}
-
 .btn-soft{
   background:#f2f2f2;
 }
 
-/* ================= RESPONSIVE ================= */
+/* RESPONSIVE */
 @media (max-width:720px){
   .detail-card{
     grid-template-columns:1fr;
@@ -235,50 +104,4 @@ header.topbar.topbar-shop .cart-count{
   .image-col img{
     max-width:100%;
   }
-
-  /* mobile: tombol full width */
-  .btn-row{
-    flex-direction:column;
-  }
-
-  .btn-row .btn-primary{
-    margin-left:0;
-    width:100%;
-  }
-
-  .btn-row .btn-soft{
-    width:100%;
-  }
-}
-
-/* ===== FIX: KERANJANG SEJAJAR DI KANAN (ANTI KETIMPA) ===== */
-header.topbar.topbar-detail{
-  display: flex !important;
-  flex-direction: row !important;   /* pastikan bukan kolom */
-  flex-wrap: nowrap !important;     /* jangan sampai turun baris */
-  align-items: center !important;
-  justify-content: flex-start !important;
-
-  padding: 16px 24px !important;
-  background: linear-gradient(90deg,#1e3a5f,#5aa9e6) !important;
-  width: 100% !important;
-}
-
-header.topbar.topbar-detail .brand{
-  flex: 0 0 auto !important;
-  color: #fff !important;
-  font-size: 32px !important;
-  font-weight: 800 !important;
-  line-height: 1 !important;
-}
-
-header.topbar.topbar-detail .cart{
-  margin-left: auto !important;     /* dorong ke kanan */
-  flex: 0 0 auto !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  color: #fff !important;
-  font-size: 18px !important;
-  line-height: 1 !important;
 }

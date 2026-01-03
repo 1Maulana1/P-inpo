@@ -1,9 +1,66 @@
 <?php
 session_start();
-// include 'koneksi.php'; // Hilangkan komentar jika sudah ada file koneksi database
 
-// Contoh logika sederhana untuk mengecek login (opsional)
-$isLoggedIn = isset($_SESSION['user_id']);
+// --- KONEKSI DATABASE ---
+$mysqli = null;
+if (file_exists('test.php')) {
+    include_once("test.php");
+} elseif (file_exists('../koneksi.php')) {
+    include_once("../koneksi.php");
+    if (isset($koneksi)) $mysqli = $koneksi;
+} else {
+    // Fallback koneksi
+    $mysqli = mysqli_connect("localhost", "root", "", "netofffice_db");
+}
+
+if (!$mysqli) {
+    die("Koneksi gagal. Cek file koneksi.");
+}
+
+$isLoggedIn = isset($_SESSION['nama']);
+
+// --- LOGIKA FILTER (Baru) ---
+$whereClauses = [];
+
+// 1. Filter Pencarian (Keyword)
+$keyword = "";
+if (isset($_GET['keyword']) && !empty($_GET['keyword'])) {
+    $keyword = mysqli_real_escape_string($mysqli, $_GET['keyword']);
+    $whereClauses[] = "(p.name LIKE '%$keyword%' OR p.brand LIKE '%$keyword%')";
+}
+
+// 2. Filter Kategori (Dari URL ?category=...)
+$selectedCategory = "";
+if (isset($_GET['category']) && !empty($_GET['category'])) {
+    $selectedCategory = mysqli_real_escape_string($mysqli, $_GET['category']);
+    $whereClauses[] = "c.name LIKE '%$selectedCategory%'";
+}
+
+// Gabungkan Filter
+$sqlWhere = "";
+if (count($whereClauses) > 0) {
+    $sqlWhere = "WHERE " . implode(' AND ', $whereClauses);
+}
+
+// --- QUERY UTAMA ---
+
+// A. Query Rekomendasi (Stok Terbanyak, abaikan filter biar tetap muncul)
+$queryRekomendasi = mysqli_query($mysqli, "
+    SELECT p.*, c.name AS category_name
+    FROM products p
+    LEFT JOIN categories c ON p.category_id = c.category_id
+    ORDER BY p.stock DESC
+    LIMIT 4
+");
+
+// B. Query Produk (Dengan Filter)
+$queryProduk = mysqli_query($mysqli, "
+    SELECT p.*, c.name AS category_name
+    FROM products p
+    LEFT JOIN categories c ON p.category_id = c.category_id
+    $sqlWhere
+    ORDER BY p.created_at DESC
+");
 ?>
 
 <!DOCTYPE html>
@@ -12,8 +69,36 @@ $isLoggedIn = isset($_SESSION['user_id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>netofffice - Beranda</title>
-    <!-- Pastikan file CSS berada di folder yang sama atau sesuaikan path-nya -->
     <link rel="stylesheet" href="beranda.css">
+    
+    <style>
+        /* CSS Tambahan untuk Kategori Aktif */
+        .category-link { text-decoration: none; color: inherit; display: block; }
+        .category-item { cursor: pointer; transition: 0.3s; border: 1px solid transparent; }
+        
+        /* Warna biru jika kategori sedang dipilih */
+        .category-item.active {
+            background-color: #e3f2fd;
+            border-color: #0056b3;
+            transform: translateY(-3px);
+        }
+        
+        /* CSS Kartu Produk (Biar Rapi) */
+        .product-card {
+            background: white; border: 1px solid #eee; border-radius: 8px; overflow: hidden;
+            display: flex; flex-direction: column; transition: 0.3s;
+        }
+        .product-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateY(-3px); }
+        .card-img-top { width: 100%; height: 180px; object-fit: cover; background: #f9f9f9; }
+        .card-body { padding: 15px; display: flex; flex-direction: column; flex: 1; }
+        .p-cat { font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 5px; }
+        .p-name { font-size: 16px; font-weight: bold; margin: 0 0 5px 0; color: #333; }
+        .p-price { font-size: 18px; color: #0056b3; font-weight: bold; margin-top: auto; }
+        .p-stock { font-size: 12px; color: #28a745; margin-bottom: 10px; }
+        .btn-card { display: block; width: 100%; padding: 10px; background: #0056b3; color: white; text-align: center; border-radius: 5px; text-decoration: none; margin-top: 10px; border: none; cursor: pointer; }
+        .btn-card:hover { background: #004494; }
+        .empty-message { grid-column: 1/-1; text-align: center; padding: 40px; color: #666; }
+    </style>
 </head>
 <body>
 
@@ -25,24 +110,14 @@ $isLoggedIn = isset($_SESSION['user_id']);
             </div>
             <div class="top-right">
                 <div class="notif-wrapper">
-                    <a class="notif-link" href="../notifikasi/notifikasi.php" aria-label="Notifikasi">🔔 Notifikasi</a>
-                    <div class="notif-pop">
-                        <p class="notif-title">Pemberitahuan</p>
-                        <ul>
-                            <li>Invoice baru siap diunduh.</li>
-                            <li>Stok printer laser hampir habis.</li>
-                            <li>Penawaran khusus untuk pembelian 10+ unit.</li>
-                        </ul>
-                    </div>
+                    <a class="notif-link" href="../notifikasi/notifikasi.php">🔔 Notifikasi</a>
                 </div>
                 
                 <?php if ($isLoggedIn): ?>
-                    <!-- Tampilan jika sudah Login -->
-                    <a href="../profil/profile.php">Halo, User</a>
+                    <a href="../profil/profile.php">Halo, <?php echo htmlspecialchars($_SESSION['nama']); ?> </a>
                     <span>|</span>
                     <a href="../logout.php">Logout</a>
                 <?php else: ?>
-                    <!-- Tampilan jika belum Login -->
                     <a href="../login/signup/signup.php">Daftar</a>
                     <span>|</span>
                     <a href="../login/login.php">Log In</a>
@@ -56,21 +131,20 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <div class="container header-content">
             <div class="logo">netofffice</div>
             
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Cari elektronik kantor di netofffice" oninput="searchProduct()">
-                <button type="button" class="search-btn" onclick="searchProduct()">🔍</button>
-            </div>
+            <form action="" method="GET" class="search-container">
+                <!-- Input hidden agar saat cari, kategori tetap terpilih (opsional) -->
+                <?php if($selectedCategory): ?>
+                    <input type="hidden" name="category" value="<?= htmlspecialchars($selectedCategory) ?>">
+                <?php endif; ?>
+                
+                <input type="text" name="keyword" id="searchInput" placeholder="Cari di netofffice..." value="<?= htmlspecialchars($keyword) ?>">
+                <button type="submit" class="search-btn">🔍</button>
+            </form>
             
             <div class="header-actions">
-                <a href="../pesanan/pesanan.php" class="orders-link" title="Pesanan Saya">
-                    📦 Pesanan
-                </a>
-                <a href="../profil/profile.php" class="profile-link" title="Profil">
-                    👤 Profil
-                </a>
-                <a href="../keranjang/keranjang.php" class="cart-icon" title="Keranjang">
-                    🛒 <span id="cartCount" class="badge">0</span>
-                </a>
+                <a href="../pesanan/pesanan.php" class="orders-link">📦 Pesanan</a>
+                <a href="../profil/profile.php" class="profile-link">👤 Profil</a>
+                <a href="../keranjang/keranjang.php" class="cart-icon">🛒 <span id="cartCount" class="badge">0</span></a>
             </div>
         </div>
     </header>
@@ -82,141 +156,161 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <!-- Banner Carousel -->
             <section class="banner-section">
                 <div class="banner-carousel" id="bannerCarousel">
-                    <div class="banner-slide active" data-category="laptop" onclick="scrollToProducts('laptop')">
+                    <div class="banner-slide active">
                         <div class="banner-content">
                             <h2>💼 Solusi Elektronik Kantor</h2>
                             <p>Diskon corporate untuk laptop & printer</p>
-                            <button class="btn-banner">Belanja Sekarang</button>
-                        </div>
-                    </div>
-                    <div class="banner-slide" data-category="printer" onclick="scrollToProducts('printer')">
-                        <div class="banner-content">
-                            <h2>🖨️ Cetak Tanpa Henti</h2>
-                            <p>Paket tinta & maintenance B2B</p>
-                            <button class="btn-banner">Lihat Printer</button>
-                        </div>
-                    </div>
-                    <div class="banner-slide" data-category="network" onclick="scrollToProducts('network')">
-                        <div class="banner-content">
-                            <h2>🌐 Koneksi Andal</h2>
-                            <p>Router, switch, dan aksesori jaringan</p>
-                            <button class="btn-banner">Cek Jaringan</button>
+                            <!-- Tombol banner sekarang pakai Link PHP -->
+                            <a href="?category=Laptop" class="btn-banner" style="text-decoration:none; display:inline-block;">Belanja Sekarang</a>
                         </div>
                     </div>
                 </div>
                 <div class="banner-dots" id="bannerDots"></div>
             </section>
 
-            <!-- Kategori Elektronik Kantor -->
+            <!-- KATEGORI ELEKTRONIK (FITUR FILTER PHP) -->
             <section class="quick-categories">
                 <h2 class="section-title">Kategori Elektronik</h2>
                 <div class="category-grid">
-                    <div class="category-item" onclick="filterByCategory('laptop')">
-                        <div class="category-icon">💻</div>
-                        <span>Laptop & Ultrabook</span>
-                    </div>
-                    <div class="category-item" onclick="filterByCategory('printer')">
-                        <div class="category-icon">🖨️</div>
-                        <span>Printer & Tinta</span>
-                    </div>
-                    <div class="category-item" onclick="filterByCategory('mobile')">
-                        <div class="category-icon">📱</div>
-                        <span>Handphone Kerja</span>
-                    </div>
-                    <div class="category-item" onclick="filterByCategory('monitor')">
-                        <div class="category-icon">🖥️</div>
-                        <span>Monitor & Display</span>
-                    </div>
-                    <div class="category-item" onclick="filterByCategory('peripheral')">
-                        <div class="category-icon">⌨️</div>
-                        <span>Keyboard & Mouse</span>
-                    </div>
-                    <div class="category-item" onclick="filterByCategory('network')">
-                        <div class="category-icon">📡</div>
-                        <span>Jaringan & Router</span>
-                    </div>
+                    
+                    <!-- Link Reset -->
+                    <a href="beranda.php" class="category-link">
+                        <div class="category-item <?= empty($selectedCategory) ? 'active' : '' ?>">
+                            <div class="category-icon">🏠</div>
+                            <span>Semua</span>
+                        </div>
+                    </a>
+
+                    <!-- Link Kategori Laptop -->
+                    <a href="?category=Laptop" class="category-link">
+                        <div class="category-item <?= strtolower($selectedCategory) == 'laptop' ? 'active' : '' ?>">
+                            <div class="category-icon">💻</div>
+                            <span>Laptop</span>
+                        </div>
+                    </a>
+
+                    <a href="?category=Printer" class="category-link">
+                        <div class="category-item <?= strtolower($selectedCategory) == 'printer' ? 'active' : '' ?>">
+                            <div class="category-icon">🖨️</div>
+                            <span>Printer</span>
+                        </div>
+                    </a>
+
+                    <a href="?category=Smartphone" class="category-link">
+                        <div class="category-item <?= (strtolower($selectedCategory) == 'smartphone' || strtolower($selectedCategory) == 'mobile') ? 'active' : '' ?>">
+                            <div class="category-icon">📱</div>
+                            <span>Handphone</span>
+                        </div>
+                    </a>
+
+                    <a href="?category=Monitor" class="category-link">
+                        <div class="category-item <?= strtolower($selectedCategory) == 'monitor' ? 'active' : '' ?>">
+                            <div class="category-icon">🖥️</div>
+                            <span>Monitor</span>
+                        </div>
+                    </a>
+
+                    <a href="?category=Keyboard" class="category-link">
+                        <div class="category-item <?= (strtolower($selectedCategory) == 'keyboard' || strtolower($selectedCategory) == 'peripheral') ? 'active' : '' ?>">
+                            <div class="category-icon">⌨️</div>
+                            <span>Aksesoris</span>
+                        </div>
+                    </a>
+
+                    <a href="?category=Jaringan" class="category-link">
+                        <div class="category-item <?= (strtolower($selectedCategory) == 'jaringan' || strtolower($selectedCategory) == 'network') ? 'active' : '' ?>">
+                            <div class="category-icon">📡</div>
+                            <span>Jaringan</span>
+                        </div>
+                    </a>
+
                 </div>
             </section>
 
-            <!-- Rekomendasi Produk -->
+            <!-- REKOMENDASI PRODUK (Sekarang ada isinya) -->
+            <!-- Disembunyikan kalau lagi filter kategori biar fokus -->
+            <?php if(empty($selectedCategory) && empty($keyword)): ?>
             <section class="flash-sale-section">
                 <div class="section-header">
                     <h2 class="section-title">✨ Rekomendasi Produk</h2>
                 </div>
-                <div class="product-grid" id="flashSaleProducts"></div>
+                <div class="product-grid" id="flashSaleProducts">
+                    <?php if (mysqli_num_rows($queryRekomendasi) > 0): ?>
+                        <?php while($row = mysqli_fetch_assoc($queryRekomendasi)): ?>
+                            <?php 
+                                $img = (!empty($row['image']) && file_exists("../uploads/".$row['image'])) ? "../uploads/".$row['image'] : "https://placehold.co/400x300?text=".urlencode($row['name']);
+                            ?>
+                            <div class="product-card">
+                                <img src="<?= $img ?>" class="card-img-top" alt="<?= htmlspecialchars($row['name']) ?>">
+                                <div class="card-body">
+                                    <span class="p-cat"><?= htmlspecialchars($row['category_name']) ?></span>
+                                    <h3 class="p-name"><?= htmlspecialchars($row['name']) ?></h3>
+                                    <div class="p-price">Rp <?= number_format($row['price'], 0, ',', '.') ?></div>
+                                    <div class="p-stock">Stok: <?= $row['stock'] ?></div>
+                                    <a href="../detail/detail.php?id=<?= $row['product_id'] ?>" class="btn-card">Lihat Detail</a>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php endif; ?>
+                </div>
             </section>
+            <?php endif; ?>
 
-            <!-- Produk Terbaru -->
+            <!-- PRODUK UTAMA (Hasil Filter Muncul Disini) -->
             <section class="products-section">
-                <h2 class="section-title" id="productTitle">📦 Produk Elektronik Kantor</h2>
-                <div class="product-grid" id="productList"></div>
+                <h2 class="section-title" id="productTitle">
+                    <?php 
+                        if ($selectedCategory) echo "📂 Kategori: " . htmlspecialchars($selectedCategory);
+                        elseif ($keyword) echo "🔍 Hasil Pencarian: " . htmlspecialchars($keyword);
+                        else echo "📦 Semua Produk Elektronik";
+                    ?>
+                </h2>
+                
+                <div class="product-grid" id="productList">
+                    <?php if (mysqli_num_rows($queryProduk) > 0): ?>
+                        <?php while($row = mysqli_fetch_assoc($queryProduk)): ?>
+                            <?php 
+                                $img = (!empty($row['image']) && file_exists("../uploads/".$row['image'])) ? "../uploads/".$row['image'] : "https://placehold.co/400x300?text=".urlencode($row['name']);
+                            ?>
+                            <div class="product-card">
+                                <img src="<?= $img ?>" class="card-img-top" alt="<?= htmlspecialchars($row['name']) ?>">
+                                <div class="card-body">
+                                    <span class="p-cat"><?= htmlspecialchars($row['category_name']) ?></span>
+                                    <h3 class="p-name"><?= htmlspecialchars($row['name']) ?></h3>
+                                    <p style="font-size:12px; color:#666; margin-bottom:10px;"><?= substr($row['specifications'], 0, 40) ?>...</p>
+                                    <div class="p-price">Rp <?= number_format($row['price'], 0, ',', '.') ?></div>
+                                    <div class="p-stock">Stok: <?= $row['stock'] ?></div>
+                                    <div style="margin-top:auto;">
+                                        <button class="btn-card" onclick="addToCart(<?= $row['product_id'] ?>)" style="background:#28a745; margin-bottom:5px;">+ Keranjang</button>
+                                        <a href="../detail/detail.php?id=<?= $row['product_id'] ?>" class="btn-card" style="background:#0056b3;">Detail</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <p class="empty-message">Produk tidak ditemukan. <a href="beranda.php" style="color:#0056b3;">Reset Filter</a></p>
+                    <?php endif; ?>
+                </div>
             </section>
 
         </div>
     </main>
 
-    <!-- Modal Detail Produk -->
-    <div class="modal" id="productModal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeProductModal()">&times;</span>
-            <div class="modal-body">
-                <img id="modalProductImg" src="" alt="Product Image">
-                <div class="modal-info">
-                    <h2 id="modalProductName"></h2>
-                    <p class="modal-store" onclick="goToStore()">🏪 <span id="modalStoreName"></span></p>
-                    <p class="modal-price" id="modalProductPrice"></p>
-                    <p class="modal-desc" id="modalProductDesc"></p>
-                    <div class="modal-actions">
-                        <button class="btn-add-cart" onclick="addToCart()">🛒 Masukkan Keranjang</button>
-                        <button class="btn-buy-now" onclick="buyNow()">💳 Beli Sekarang</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
+    <!-- Footer & Scripts (Sama seperti template Anda) -->
     <footer class="footer">
         <div class="container footer-content">
-            <div class="footer-section">
-                <h3>netofffice</h3>
-                <p>Marketplace B2B untuk elektronik kantor: printer, laptop, jaringan, dan aksesoris kerja.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Layanan</h4>
-                <a href="#">Bantuan</a>
-                <a href="#">Cara Belanja</a>
-                <a href="#">Pembayaran</a>
-                <a href="#">Pengiriman</a>
-            </div>
-            <div class="footer-section">
-                <h4>Tentang Kami</h4>
-                <a href="#">Tentang netofffice</a>
-                <a href="#">Karir</a>
-                <a href="#">Kebijakan</a>
-            </div>
-            <div class="footer-section">
-                <h4>Ikuti Kami</h4>
-                <div class="social-links">
-                    <a href="#">📘 Facebook</a>
-                    <a href="#">📸 Instagram</a>
-                    <a href="#">🐦 Twitter</a>
-                </div>
-            </div>
+            <div class="footer-section"><h3>netofffice</h3><p>Marketplace B2B Elektronik.</p></div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 netofffice. All rights reserved.</p>
-        </div>
+        <div class="footer-bottom"><p>&copy; 2025 netofffice.</p></div>
     </footer>
 
-    <!-- Chat Button -->
-    <div class="chat-button" title="Hubungi CS">💬</div>
-
-    <!-- Container untuk notifikasi JS -->
-    <div id="notifikasiContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
-
-    <!-- Scripts -->
-    <script src="../toko/data.js"></script>
     <script src="beranda.js"></script>
+    <script>
+        function addToCart(id) {
+            alert("Produk ID " + id + " ditambahkan ke keranjang.");
+            let badge = document.getElementById('cartCount');
+            badge.innerText = parseInt(badge.innerText) + 1;
+        }
+    </script>
 </body>
 </html>

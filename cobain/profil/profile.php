@@ -1,19 +1,39 @@
 <?php
 session_start();
 
-// Simulasi Data User (Data Dummy)
-// Nanti bisa diganti dengan ambil data dari Database
-$user = [
-    'username'  => 'bravesttama',
-    'name'      => 'Minastitiek',
-    'email'     => 'br*********@gmail.com',
-    'phone'     => '0812****54',
-    'shop_name' => 'Jajanan Pasar Toko Irna',
-    'gender'    => 'Lainnya',
-    'avatar'    => '../img/default-avatar.png'
-];
-?>
+/* ===============================
+   CEK LOGIN (WAJIB)
+================================ */
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login/login.php");
+    exit;
+}
 
+/* ===============================
+   KONEKSI DATABASE
+================================ */
+include_once("test.php");
+
+/* ===============================
+   AMBIL DATA USER
+================================ */
+$userId = $_SESSION['user_id'];
+
+$stmt = $mysqli->prepare("
+    SELECT nama, email, phone, date 
+    FROM users 
+    WHERE user_id = ?
+");
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+$nama  = $user['nama'] ?? '';
+$email = $user['email'] ?? '';
+$phone = $user['phone'] ?? '';
+$date  = $user['date'] ?? '';
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -33,7 +53,7 @@ $user = [
             </div>
             <div class="top-right">
                 <!-- Link Logout -->
-                <a href="../logout.php">Logout</a>
+                <a href="/cobain/login/login.php">Logout</a>
             </div>
         </div>
     </div>
@@ -41,7 +61,7 @@ $user = [
     <!-- Header / Navbar -->
     <header class="navbar">
         <div class="container header-content">
-            <div class="logo">netofffice</div>
+            <div class="logo"> <a href="/cobain/beranda/beranda.php">netofffice</a></div>
             <div class="search-container">
                 <input type="text" placeholder="Cari elektronik kantor di netofffice">
                 <button type="button" class="search-btn">🔍</button>
@@ -60,8 +80,6 @@ $user = [
         
         <!-- SIDEBAR -->
         <aside class="sidebar">
-            <a class="back-home" href="../beranda/beranda.php">← Kembali ke Beranda</a>
-            
             <div class="user-brief">
                 <img src="<?php echo $user['avatar']; ?>" id="sidebar-avatar" class="mini-avatar" alt="Avatar">
                 <div class="user-details">
@@ -78,7 +96,7 @@ $user = [
                     <ul class="submenu">
                         <li class="sidebar-subitem active"><a href="profile.php">Profil</a></li>
                         <li class="sidebar-subitem"><a href="bank.php">Bank & Kartu</a></li>
-                        <li class="sidebar-subitem"><a href="alamat.php">Alamat</a></li>
+                        <li class="sidebar-subitem"><a href="alamat/alamat.php">Alamat</a></li>
                     </ul>
                 </div>
 
@@ -114,63 +132,33 @@ $user = [
                     <form id="profileForm" method="POST" onsubmit="handleSave(event)">
                         
                         <div class="form-group">
-                            <label>Username</label>
-                            <span style="font-weight: 500;"><?php echo $user['username']; ?></span>
-                        </div>
-                        
-                        <div class="form-group">
                             <label>Nama</label>
-                            <!-- Tambahkan name="fullname" -->
-                            <input type="text" name="fullname" value="<?php echo $user['name']; ?>">
+                            <input type="text" name="nama" value="<?= htmlspecialchars($nama) ?>">
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Email</label>
-                            <span><?php echo $user['email']; ?> <a href="#" style="color:#5AA9E6; margin-left:5px;">Ubah</a></span>
+                            <span><?= htmlspecialchars($email) ?></span>
                         </div>
                         
                         <div class="form-group">
-                            <label>Nomor Telepon</label>
-                            <span><?php echo $user['phone']; ?> <a href="#" style="color:#5AA9E6; margin-left:5px;">Ubah</a></span>
+                            <label>No Telepon</label>
+                            <span><?= htmlspecialchars($phone) ?></span>
                         </div>
                         
                         <div class="form-group">
-                            <label>Nama Toko</label>
-                            <!-- Tambahkan name="shop_name" -->
-                            <input type="text" name="shop_name" value="<?php echo $user['shop_name']; ?>">
+                            <label>Tanggal Lahir</label>
+                            <input type="date" name="birth_date" value="<?= htmlspecialchars($date) ?>">
                         </div>
                         
                         <div class="form-group">
-                            <label>Jenis Kelamin</label>
-                            <div class="radio-group">
-                                <label><input type="radio" name="gender" value="Laki-laki" <?php echo ($user['gender'] == 'Laki-laki') ? 'checked' : ''; ?>> Laki-laki</label>
-                                <label><input type="radio" name="gender" value="Perempuan" <?php echo ($user['gender'] == 'Perempuan') ? 'checked' : ''; ?>> Perempuan</label>
-                                <label><input type="radio" name="gender" value="Lainnya" <?php echo ($user['gender'] == 'Lainnya') ? 'checked' : ''; ?>> Lainnya</label>
-                            </div>
-                        </div>    
-                        
-                        <div class="form-group">
-                            <label>Tanggal lahir</label>
-                            <div class="birth-date-group">
-                                <select id="day" name="day"><option disabled selected>Tanggal</option></select>
-                                <select id="month" name="month">
-                                    <option disabled selected>Bulan</option>
-                                    <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
-                                    <option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
-                                    <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
-                                    <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
-                                </select>
-                                <select id="year" name="year"><option disabled selected>Tahun</option></select>
-                            </div>
-                        </div>
-                        
                         <button type="submit" class="btn-save">Simpan</button>
+                        </div>
                     </form>
                 </div>
 
                 <!-- Upload Avatar Kanan -->
                 <div class="avatar-upload">
-                    <img src="<?php echo $user['avatar']; ?>" alt="Profile" class="large-avatar" id="display-avatar">
                     
                     <input type="file" id="file-input" name="avatar" accept=".jpg, .jpeg, .png" style="display: none;" onchange="previewImage(this)">
                     

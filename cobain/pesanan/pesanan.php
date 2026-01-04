@@ -1,12 +1,91 @@
 <?php
 session_start();
 
-// Simulasi Data User (Agar sidebar tidak kosong)
-// Di aplikasi asli, data ini diambil dari session/database saat login
-$user = [
-    'username' => $_SESSION['username'] ?? 'User',
-    'is_logged_in' => isset($_SESSION['user_id']) || true // Set true untuk preview tampilan
-];
+// --- 1. KONEKSI DATABASE ---
+$mysqli = null;
+if (file_exists('../test.php')) { include_once('../test.php'); } 
+elseif (file_exists('../koneksi.php')) { include_once('../koneksi.php'); } 
+elseif (file_exists('test.php')) { include_once('test.php'); }
+
+if (isset($koneksi) && $koneksi) { $mysqli = $koneksi; } 
+elseif (isset($conn) && $conn) { $mysqli = $conn; }
+
+if (!$mysqli) { $mysqli = @mysqli_connect("localhost", "root", "", "netofffice_db"); }
+if (!$mysqli) { die("<h3>Koneksi Gagal</h3><p>Tidak dapat terhubung ke database.</p>"); }
+
+// --- 2. CEK LOGIN ---
+if (!isset($_SESSION['user_id'])) {
+    // Recovery session by nama
+    if (isset($_SESSION['nama'])) {
+        $nama = mysqli_real_escape_string($mysqli, $_SESSION['nama']);
+        $q = mysqli_query($mysqli, "SELECT user_id FROM users WHERE full_name = '$nama' OR nama = '$nama' LIMIT 1");
+        if ($r = mysqli_fetch_assoc($q)) {
+            $_SESSION['user_id'] = $r['user_id'];
+        } else {
+            header("Location: ../login/login.php"); exit();
+        }
+    } else {
+        header("Location: ../login/login.php"); exit();
+    }
+}
+
+$user_id = $_SESSION['user_id'];
+
+// --- 3. AMBIL DATA PESANAN ---
+$query = "SELECT 
+            o.order_id, o.order_date, o.total_amount, o.status,
+            oi.quantity, oi.price_at_purchase,
+            p.name AS product_name, p.image, p.brand
+          FROM orders o
+          JOIN order_items oi ON o.order_id = oi.order_id
+          JOIN products p ON oi.product_id = p.product_id
+          WHERE o.user_id = '$user_id'
+          ORDER BY o.order_date DESC";
+
+$result = mysqli_query($mysqli, $query);
+if (!$result) { die("Error Database Query: " . mysqli_error($mysqli)); }
+
+// --- 4. FORMAT DATA KE JSON ---
+$ordersData = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $oid = $row['order_id'];
+    $statusCode = 'unpaid';
+    $statusLabel = 'Belum Bayar';
+    
+    switch (strtolower($row['status'])) {
+        case 'pending': $statusCode = 'unpaid'; $statusLabel = 'Belum Bayar'; break;
+        case 'paid': $statusCode = 'shipping'; $statusLabel = 'Sedang Dikemas'; break;
+        case 'shipped': $statusCode = 'shipping'; $statusLabel = 'Dikirim'; break;
+        case 'completed': case 'done': case 'selesai': $statusCode = 'completed'; $statusLabel = 'Selesai'; break;
+        case 'cancelled': $statusCode = 'cancelled'; $statusLabel = 'Dibatalkan'; break;
+    }
+
+    if (!isset($ordersData[$oid])) {
+        $ordersData[$oid] = [
+            'id' => 'ORD-' . $oid,
+            'real_id' => $oid,
+            'shopName' => 'NetOffice Official',
+            'status' => $row['status'],
+            'statusCode' => $statusCode,
+            'statusLabel' => $statusLabel,
+            'total' => (int)$row['total_amount'],
+            'items' => []
+        ];
+    }
+
+    $imgSource = "../uploads/" . $row['image'];
+    $displayImg = (!empty($row['image']) && file_exists("../" . $imgSource)) 
+        ? $imgSource : "https://placehold.co/80x80/eee/999?text=" . urlencode(substr($row['product_name'], 0, 3));
+
+    $ordersData[$oid]['items'][] = [
+        'name' => $row['product_name'],
+        'variant' => $row['brand'],
+        'quantity' => (int)$row['quantity'],
+        'price' => (int)$row['price_at_purchase'],
+        'image' => $displayImg
+    ];
+}
+$ordersJSON = json_encode(array_values($ordersData));
 ?>
 
 <!DOCTYPE html>
@@ -15,91 +94,28 @@ $user = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pesanan Saya - netofffice</title>
-    <!-- CSS dan JS dipanggil sesuai permintaan -->
-    <link rel="stylesheet" href="pesanan.css">
-    <script src="pesanan.js" defer></script>
-    
-    <!-- Sedikit style tambahan untuk sidebar agar rapi jika CSS utama belum mengatur list -->
-    <style>
-        .sidebar-nav ul { list-style: none; padding: 0; }
-        .sidebar-nav li { padding: 10px 0; }
-        .sidebar-nav a { text-decoration: none; color: #333; display: block; }
-        .sidebar-nav a:hover, .sidebar-nav li.active a { color: #5AA9E6; font-weight: bold; }
-    </style>
+    <!-- Panggil File CSS Terpisah -->
+    <link rel="stylesheet" href="pesananp.css">
 </head>
+<body>
 
-<body class="min-h-screen flex flex-col">
-
-    <header>
-        <div class="top-header"> 
-            <div class="top-left">
-                <span>netofffice · B2B Elektronik Kantor</span>
-            </div>
-
-            <div class="top-right">
-                <?php if ($user['is_logged_in']): ?>
-                    <a href="../profil/profile.php">Halo, <?php echo $user['username']; ?></a>
-                    <span>|</span>
-                    <a href="../logout.php">Logout</a>
-                <?php else: ?>
-                    <a href="../login/signup/signup.php">Daftar</a>
-                    <span>|</span>
-                    <a href="../login/login.php">Log In</a>
-                <?php endif; ?>
-            </div>
+    <div class="container">
+        <div class="page-header">
+            <a href="../beranda/beranda.php" class="btn-back">←</a>
+            <h1>Pesanan Saya</h1>
         </div>
 
-        <div class="main-header">
-            <div class="logo">netofffice</div>
-            <div class="search-box"> 
-                <input type="text" placeholder="Cari elektronik kantor">
-                <button> 🔍 </button>
-            </div>
-            <div class="cart-icon">
-                <a href="../keranjang/keranjang.php" style="text-decoration:none; color:inherit;">🛒</a>
-            </div>
-        </div>
-    </header>
-
-    <div class="content-wrapper">
-        <aside class="sidebar">
-            <!-- Menambahkan info user ringkas di sidebar -->
-            <div class="user-brief" style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
-                <strong><?php echo $user['username']; ?></strong>
-                <br>
-                <a href="../profil/profile.php" style="font-size: 12px; color: #888;">Ubah Profil</a>
-            </div>
-
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="../profil/profile.php">👤 Akun Saya</a></li>
-                    <li class="active"><a href="pesanan.php">📦 Pesanan Saya</a></li>
-                    <li><a href="../notifikasi/notifikasi.php">🔔 Notifikasi</a></li>
-                </ul>
-            </nav>
-        </aside>
-
-        <div class="main-content">
-            <div class="tabs-wrapper">
-                <a class="back-home" href="../beranda/beranda.php">← Kembali</a>
-                
-                <!-- Container Tab akan diisi otomatis oleh pesanan.js -->
-                <!-- Saya tambahkan fallback HTML statis agar tidak kosong jika JS belum load -->
-                <div id="tabs-container" class="tabs-container hide-scroll">
-                    <div class="tab-item active" data-status="all">Semua</div>
-                    <div class="tab-item" data-status="unpaid">Belum Bayar</div>
-                    <div class="tab-item" data-status="packed">Dikemas</div>
-                    <div class="tab-item" data-status="sent">Dikirim</div>
-                    <div class="tab-item" data-status="completed">Selesai</div>
-                </div>
-            </div>
-            
-            <!-- Daftar Pesanan akan diisi otomatis oleh pesanan.js -->
-            <div id="orders-list" class="orders-list">
-                <p style="text-align: center; color: #999; padding: 20px;">Memuat data pesanan...</p>
-            </div>
-        </div>
+        <div class="tabs-container" id="tabs-container"></div>
+        <div id="orders-list"></div>
     </div>
+
+    <!-- Inject Data PHP ke Variable Global JS -->
+    <script>
+        window.ordersData = <?= $ordersJSON ?>;
+    </script>
+
+    <!-- Panggil File JS Terpisah -->
+    <script src="pesanan_p.js"></script>
 
 </body>
 </html>

@@ -45,21 +45,7 @@ $isLoggedIn = isset($_SESSION['nama']);
     <title>Keranjang Belanja - netofffice</title>
     <link rel="stylesheet" href="keranjang.css">
     <style>
-        /* CSS Tambahan (Sesuai yang Anda berikan) */
-        .cart-item { display: flex; align-items: flex-start; padding: 15px; border-bottom: 1px solid #eee; gap: 15px; }
-        .cart-img { width: 80px; height: 80px; object-fit: cover; border-radius: 6px; background: #f0f0f0; }
-        .cart-details { flex: 1; }
-        .cart-title { font-weight: bold; margin-bottom: 5px; font-size: 16px; color:#333; text-decoration: none; display:block; }
-        .cart-price { color: #0056b3; font-weight: bold; }
-        .cart-actions { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-        /* Tombol Qty dipercantik */
-        .btn-qty { 
-            padding: 4px 10px; border: 1px solid #ccc; background: #fff; cursor: pointer; 
-            text-decoration: none; color: #333; border-radius: 4px; font-weight: bold;
-        }
-        .btn-qty:hover { background: #f0f0f0; }
-        .btn-delete { color: red; text-decoration: none; font-size: 12px; margin-left: auto; }
-        .empty-cart { text-align: center; padding: 50px; }
+
     </style>
 </head>
 <body>

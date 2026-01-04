@@ -1,0 +1,304 @@
+/* --- RESET & LAYOUT DASAR --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    color: #333;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 80px; /* Ruang untuk footer */
+}
+
+/* --- HEADER HALAMAN --- */
+.page-header {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.btn-back {
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+    font-size: 20px;
+    margin-right: 15px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* --- TABS (NAVIGASI STATUS) --- */
+.tabs-container {
+    display: flex;
+    overflow-x: auto;
+    background: white;
+    padding: 0 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    gap: 0; /* Gap dihandle oleh padding button */
+    white-space: nowrap;
+    scrollbar-width: none; /* Firefox */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-bottom: 1px solid #eee;
+}
+
+/* Sembunyikan scrollbar Chrome/Safari */
+.tabs-container::-webkit-scrollbar {
+    display: none; 
+}
+
+.tab-button {
+    border: none;
+    background: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.tab-button:hover {
+    color: #0056b3;
+}
+
+.tab-button.active {
+    color: #0056b3;
+    border-bottom-color: #0056b3;
+    font-weight: bold;
+}
+
+/* --- KARTU PESANAN (Order Card) --- */
+.order-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #eee;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header Kartu: Toko & Status */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.order-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.shop-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.order-status {
+    font-size: 12px;
+    font-weight: bold;
+    color: #f97316; /* Warna Orange (Default) */
+    text-transform: uppercase;
+}
+
+.order-status.completed {
+    color: #28a745; /* Warna Hijau (Selesai) */
+}
+
+/* --- ITEM PRODUK --- */
+.order-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.item-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #f9f9f9;
+    border: 1px solid #eee;
+}
+
+.item-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.item-name {
+    font-size: 14px;
+    margin: 0 0 4px 0;
+    line-height: 1.4;
+    color: #333;
+    font-weight: 500;
+    /* Batasi teks 2 baris */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.item-variant {
+    font-size: 12px;
+    color: #888;
+    margin: 0;
+}
+
+.item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 5px;
+}
+
+.item-quantity {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+}
+
+.item-price {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+/* --- FOOTER KARTU --- */
+.order-footer {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-total {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.order-total-label {
+    color: #666;
+}
+
+.order-total-amount {
+    font-size: 16px;
+    color: #0056b3;
+    font-weight: bold;
+}
+
+/* --- TOMBOL AKSI --- */
+.order-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+button {
+    font-family: inherit;
+    outline: none;
+}
+
+.btn-primary {
+    background: #0056b3;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background: #004494;
+}
+
+.btn-secondary {
+    background: white;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #f9f9f9;
+    border-color: #ccc;
+    color: #333;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #0056b3;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 8px 10px;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+/* --- KONDISI KOSONG (Empty State) --- */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.empty-icon svg {
+    width: 60px;
+    height: 60px;
+    color: #ddd;
+    margin-bottom: 15px;
+}
+
+.empty-text {
+    font-size: 16px;
+    margin: 0;
+    color: #666;
+}

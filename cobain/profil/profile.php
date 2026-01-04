@@ -12,7 +12,8 @@ if (!isset($_SESSION['user_id'])) {
 /* ===============================
    KONEKSI DATABASE
 ================================ */
-include_once("test.php");
+// Pastikan path ini benar sesuai struktur folder kamu
+include_once("../login/test.php"); 
 
 /* ===============================
    AMBIL DATA USER
@@ -20,7 +21,7 @@ include_once("test.php");
 $userId = $_SESSION['user_id'];
 
 $stmt = $mysqli->prepare("
-    SELECT nama, email, phone, date 
+    SELECT nama, email, phone, date, avatar
     FROM users 
     WHERE user_id = ?
 ");
@@ -29,10 +30,12 @@ $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
+// Gunakan Null Coalescing Operator untuk menghindari error jika data kosong
 $nama  = $user['nama'] ?? '';
 $email = $user['email'] ?? '';
 $phone = $user['phone'] ?? '';
 $date  = $user['date'] ?? '';
+$avatar = $user['avatar'] ?? 'default-avatar.png'; // Fallback avatar
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -40,33 +43,30 @@ $date  = $user['date'] ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Saya - netofffice</title>
-    <!-- Pastikan file CSS ini ada di folder yang sama (folder profil) -->
     <link rel="stylesheet" href="profile.css">
 </head>
 <body>
 
-    <!-- Top Bar -->
     <div class="top-bar">
         <div class="container top-bar-content">
             <div class="top-left">
                 <span>netofffice · B2B Elektronik Kantor</span>
             </div>
             <div class="top-right">
-                <!-- Link Logout -->
                 <a href="/cobain/login/login.php">Logout</a>
             </div>
         </div>
     </div>
 
-    <!-- Header / Navbar -->
     <header class="navbar">
         <div class="container header-content">
-            <div class="logo"> <a href="/cobain/beranda/beranda.php">netofffice</a></div>
+            <div class="logo"> 
+                <a href="/cobain/beranda/beranda.php" style="color: #ffffff; text-decoration: none;">netofffice</a>
+            </div>
             <div class="search-container">
                 <input type="text" placeholder="Cari elektronik kantor di netofffice">
                 <button type="button" class="search-btn">🔍</button>
             </div>
-            <!-- Link Keranjang -->
             <div class="cart-icon">
                 <a href="../keranjang/keranjang.php" style="text-decoration:none; color:inherit;">
                     🛒 <span class="badge">0</span>
@@ -75,15 +75,13 @@ $date  = $user['date'] ?? '';
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container main-layout">
         
-        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="user-brief">
-                <img src="<?php echo $user['avatar']; ?>" id="sidebar-avatar" class="mini-avatar" alt="Avatar">
+                <img src="../uploads/<?php echo htmlspecialchars($avatar); ?>" id="sidebar-avatar" class="mini-avatar" alt="Avatar">
                 <div class="user-details">
-                    <p class="username"><?php echo $user['username']; ?></p>
+                    <p class="username"><?php echo htmlspecialchars($nama); ?></p>
                     <a href="#" class="edit-profile">✏️ Ubah Profil</a>
                 </div>
             </div>
@@ -95,21 +93,17 @@ $date  = $user['date'] ?? '';
                     </div>
                     <ul class="submenu">
                         <li class="sidebar-subitem active"><a href="profile.php">Profil</a></li>
-                        <li class="sidebar-subitem"><a href="bank.php">Bank & Kartu</a></li>
+                        
+                        <li class="sidebar-subitem"><a href="bank/bank.php">Bank & Kartu</a></li>
+                        
                         <li class="sidebar-subitem"><a href="alamat/alamat.php">Alamat</a></li>
                     </ul>
-                </div>
-
-                <div class="sidebar-item">
-                    <span class="menu-icon">🔔</span> <a href="../notifikasi/notifikasi.php">Notifikasi</a>
                 </div>
                 
                 <div class="sidebar-item">
                     <span class="menu-icon">📦</span> <a href="../pesanan/pesanan.php">Pesanan Saya</a>
                 </div>
 
-                <!-- MENU SELLER / TOKO SAYA -->
-                <!-- PENTING: Pastikan folder 'seller' dan file 'index.php' sudah dibuat sejajar dengan folder 'profil' -->
                 <div class="sidebar-item seller-menu">
                     <span class="menu-icon">🏪</span> 
                     <a href="../seller/index.php" style="color: #EE4D2D; font-weight: bold;">Toko Saya</a>
@@ -117,7 +111,6 @@ $date  = $user['date'] ?? '';
             </nav>
         </aside>
 
-        <!-- PROFILE CARD -->
         <section class="profile-card">
             <div class="profile-header">
                 <h2>Profil Saya</h2>
@@ -126,9 +119,7 @@ $date  = $user['date'] ?? '';
             <hr>
 
             <div class="profile-body">
-                <!-- Form Kiri -->
                 <div class="form-container">
-                    <!-- Tambahkan method="POST" agar form berfungsi -->
                     <form id="profileForm" method="POST" onsubmit="handleSave(event)">
                         
                         <div class="form-group">
@@ -152,25 +143,20 @@ $date  = $user['date'] ?? '';
                         </div>
                         
                         <div class="form-group">
-                        <button type="submit" class="btn-save">Simpan</button>
+                            <button type="submit" class="btn-save">Simpan</button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Upload Avatar Kanan -->
                 <div class="avatar-upload">
-                    
                     <input type="file" id="file-input" name="avatar" accept=".jpg, .jpeg, .png" style="display: none;" onchange="previewImage(this)">
-                    
                     <button type="button" class="btn-select-img" onclick="document.getElementById('file-input').click()">Pilih Gambar</button>
-                    
                     <p class="info-text">Ukuran gambar: maks. 1 MB<br>Format gambar: .JPEG, .PNG</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Modal Success -->
     <div id="successModal" class="modal-overlay">
         <div class="modal-content">
             <div class="success-icon">✔️</div>
@@ -179,7 +165,6 @@ $date  = $user['date'] ?? '';
         </div>
     </div>
 
-    <!-- Script JS -->
     <script src="profile.js"></script>
 </body>
 </html>

@@ -1,35 +1,68 @@
-/* Layout Khusus Halaman Bank */
-.card-flex {
+/* Styling Header Halaman Bank (Mirip address-header) */
+.bank-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
 }
 
+.bank-header h2 {
+    font-size: 20px;
+    color: #333;
+    margin: 0;
+}
+
+/* Tombol Tambah (Mirip btn-add-address) */
 .btn-add-card {
-    background-color: #5AA9E6; /* Warna biru */
+    background-color: #5AA9E6;
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 2px;
     cursor: pointer;
+    border-radius: 2px;
     font-size: 14px;
+    font-weight: 500;
 }
 
 .btn-add-card:hover {
-    background-color: #3b89c8;
+    background-color: #4a90c4;
 }
 
-.bank-content {
-    min-height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Area List Bank */
+.bank-list {
+    padding: 20px 0;
 }
 
+/* Tampilan Kosong (Empty State) - Penting untuk halaman Bank baru */
 .empty-state {
     text-align: center;
-    color: rgba(0, 0, 0, 0.54); /* Warna abu-abu teks kosong */
-    font-size: 16px;
+    padding: 40px 0;
+    color: #888;
 }
 
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
 
+/* Styling item bank (Jika nanti sudah ada datanya) */
+.bank-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.bank-info p {
+    margin: 5px 0;
+}
+
+.bank-actions a {
+    color: #5AA9E6;
+    text-decoration: none;
+    margin-left: 15px;
+    font-size: 14px;
+}

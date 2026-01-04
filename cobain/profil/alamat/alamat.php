@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-// Simulasi Data User (Sama seperti file lainnya)
+// Simulasi Data User
 $user = [
     'username'  => 'bravesttama',
     'name'      => 'Minastitiek',
     'email'     => 'br*********@gmail.com',
     'phone'     => '0812****54',
     'shop_name' => 'Jajanan Pasar Toko Irna',
-    'avatar'    => '../img/default-avatar.png'
+    'avatar'    => '../../img/default-avatar.png' // Mundur 2 folder untuk gambar juga
 ];
 ?>
 
@@ -18,54 +18,48 @@ $user = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alamat Saya - netofffice</title>
-    <!-- CSS Utama Profile -->
     <link rel="stylesheet" href="../profile.css"> 
-    <!-- CSS Khusus Halaman Alamat -->
     <link rel="stylesheet" href="alamat.css">
 </head>
 <body>
 
-    <!-- Top Bar -->
     <div class="top-bar">
         <div class="container top-bar-content">
             <div class="top-left">
                 <span>netofffice · B2B Elektronik Kantor</span>
             </div>
             <div class="top-right">
-                <a href="../notifikasi/notifikasi.php">🔔 Notifikasi</a>
-                <a href="#">❓ Bantuan</a>
+                <a href="../../notifikasi/notifikasi.php">🔔 Notifikasi</a> <a href="#">❓ Bantuan</a>
                 <span style="margin: 0 5px;">|</span>
-                <a href="../login.php" style="text-decoration: none; color: white;">Logout</a>
-            </div>
+                <a href="../../login/login.php" style="text-decoration: none; color: white;">Logout</a> </div>
         </div>
     </div>
 
-    <!-- Header / Navbar -->
     <header class="navbar">
         <div class="container header-content">
-            <div class="logo"><a href="/cobain/beranda/beranda.php">netofffice</a></div>
+            <div class="logo"> 
+                <a href="../../beranda/beranda.php" style="color: #ffffff; text-decoration: none;">netofffice</a>
+            </div>
             <div class="search-container">
                 <input type="text" placeholder="Cari elektronik kantor di netofffice">
                 <button type="submit" class="search-btn">🔍</button>
             </div>
             <div class="cart-icon">
-                <a href="../keranjang/keranjang.php" style="text-decoration:none; color:inherit;">
+                <a href="../../keranjang/keranjang.php" style="text-decoration:none; color:inherit;">
                     🛒 <span class="badge">0</span>
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container main-layout">
         
-        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="user-brief">
                 <img src="<?php echo $user['avatar']; ?>" id="sidebar-avatar" class="mini-avatar" alt="Avatar">
                 <div class="user-details">
                     <p class="username"><?php echo $user['username']; ?></p>
-                    <a href="/profile/profile.php" class="edit-profile" style="text-decoration: none;">✏️ Ubah Profil</a>
+                    <a href="../profile.php" class="edit-profile" style="text-decoration: none;">✏️ Ubah Profil</a>
                 </div>
             </div>
 
@@ -74,31 +68,24 @@ $user = [
                     <div class="sidebar-item">
                         <span class="menu-icon">👤</span> <span class="menu-parent">Akun Saya</span>
                     </div>
-                    <!-- PERBAIKAN DI SINI (Baris 87-90): Menambahkan text-decoration: none -->
                     <ul class="submenu">
-                        <li class="sidebar-subitem"><a href="/cobain/profil/profile.php" style="text-decoration: none;">Profil</a></li>
-                        <li class="sidebar-subitem"><a href="/cobain/profil/bank/bank.php" style="text-decoration: none;">Bank & Kartu</a></li>
-                        <li class="sidebar-subitem active"><a href="/cobain/profil/alamat/alamat.php" style="text-decoration: none;">Alamat</a></li>
+                        <li class="sidebar-subitem"><a href="../profile.php" style="text-decoration: none;">Profil</a></li>
+                        <li class="sidebar-subitem"><a href="../bank/bank.php" style="text-decoration: none;">Bank & Kartu</a></li>
+                        <li class="sidebar-subitem active"><a href="alamat.php" style="text-decoration: none;">Alamat</a></li>
                     </ul>
                 </div>
                 
                 <div class="sidebar-item">
-                    <span class="menu-icon">🔔</span> <a href="../notifikasi/notifikasi.php" style="text-decoration: none; color: inherit;">Notifikasi</a>
-                </div>
-                
-                <div class="sidebar-item">
-                    <span class="menu-icon">📦</span> <a href="../pesanan/pesanan.php" style="text-decoration: none; color: inherit;">Pesanan Saya</a>
+                    <span class="menu-icon">📦</span> <a href="../../pesanan/pesanan.php" style="text-decoration: none; color: inherit;">Pesanan Saya</a>
                 </div>
 
-                <!-- MENU SELLER -->
                 <div class="sidebar-item seller-menu">
                     <span class="menu-icon">🏪</span> 
-                    <a href="../seller/index.php" style="color: #EE4D2D; font-weight: bold; text-decoration: none;">Toko Saya</a>
+                    <a href="../../seller/index.php" style="color: #EE4D2D; font-weight: bold; text-decoration: none;">Toko Saya</a>
                 </div>
             </nav>
         </aside>
 
-        <!-- KONTEN UTAMA: ALAMAT -->
         <section class="profile-card">
             <div class="address-header">
                 <h2>Alamat Saya</h2>
@@ -109,7 +96,6 @@ $user = [
             <div class="address-list">
                 <h3>Alamat</h3>
                 
-                <!-- Item Alamat 1 -->
                 <div class="address-item">
                     <div class="address-info">
                         <p><strong><?php echo $user['name']; ?></strong> | (+62) 813 3333 0000 <a href="#" class="action-link">Ubah</a></p>
@@ -125,7 +111,6 @@ $user = [
                 
                 <hr>
                 
-                <!-- Item Alamat 2 -->
                 <div class="address-item">
                     <div class="address-info">
                         <p><strong>Kost Pak Santoso</strong> | (+62) 228 1398 9004 <a href="#" class="action-link">Ubah</a> <a href="#" class="action-link delete">Hapus</a></p>
@@ -138,7 +123,6 @@ $user = [
         </section>
     </main>
 
-    <!-- Modal Tambah Alamat -->
     <div id="addressModal" class="modal-overlay">
         <div class="modal-address">
             <h3>Alamat Baru</h3>

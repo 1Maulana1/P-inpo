@@ -72,37 +72,68 @@ $queryProduk = mysqli_query($mysqli, "
     <link rel="stylesheet" href="beranda.css">
     
     <style>
-        /* CSS Tambahan untuk Kategori Aktif */
+        /* --- CSS Notifikasi (Toast) --- */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background-color: #fff;
+            color: #333;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 280px;
+            border-left: 5px solid #28a745; /* Garis hijau di kiri */
+            animation: slideIn 0.3s ease-out, fadeOut 0.5s 2.5s forwards;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+        }
+
+        .toast-icon { font-size: 18px; }
+        .toast-content { display: flex; flex-direction: column; }
+        .toast-title { font-weight: bold; margin-bottom: 2px; }
+        .toast-msg { color: #666; font-size: 13px; }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+        }
+
+        /* CSS Tambahan Kategori & Card (Sama seperti sebelumnya) */
         .category-link { text-decoration: none; color: inherit; display: block; }
-        .category-item { cursor: pointer; transition: 0.3s; border: 1px solid transparent; }
-        
-        /* Warna biru jika kategori sedang dipilih */
-        .category-item.active {
-            background-color: #e3f2fd;
-            border-color: #0056b3;
-            transform: translateY(-3px);
-        }
-        
-        /* CSS Kartu Produk (Biar Rapi) */
-        .product-card {
-            background: white; border: 1px solid #eee; border-radius: 8px; overflow: hidden;
-            display: flex; flex-direction: column; transition: 0.3s;
-        }
+        .category-item.active { background-color: #e3f2fd; border: 1px solid #0056b3; }
+        .product-card { background: white; border: 1px solid #eee; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; }
         .product-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateY(-3px); }
         .card-img-top { width: 100%; height: 180px; object-fit: cover; background: #f9f9f9; }
         .card-body { padding: 15px; display: flex; flex-direction: column; flex: 1; }
-        .p-cat { font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 5px; }
-        .p-name { font-size: 16px; font-weight: bold; margin: 0 0 5px 0; color: #333; }
-        .p-price { font-size: 18px; color: #0056b3; font-weight: bold; margin-top: auto; }
-        .p-stock { font-size: 12px; color: #28a745; margin-bottom: 10px; }
         .btn-card { display: block; width: 100%; padding: 10px; background: #0056b3; color: white; text-align: center; border-radius: 5px; text-decoration: none; margin-top: 10px; border: none; cursor: pointer; }
         .btn-card:hover { background: #004494; }
-        .empty-message { grid-column: 1/-1; text-align: center; padding: 40px; color: #666; }
+        .p-cat { font-size: 11px; text-transform: uppercase; color: #888; }
+        .p-name { font-size: 16px; font-weight: bold; margin: 5px 0; color: #333; }
+        .p-price { font-size: 18px; color: #0056b3; font-weight: bold; margin-top: auto; }
+        .p-stock { font-size: 12px; color: #28a745; margin-bottom: 10px; }
     </style>
 </head>
+
 <body>
 
-    <!-- Top Bar -->
+    <!-- Container Notifikasi (Wajib Ada) -->
+    <div id="toast-container"></div>
+
+    <!-- Top Bar & Header -->
     <div class="top-bar">
         <div class="container top-bar-content">
             <div class="top-left">
@@ -155,7 +186,7 @@ $queryProduk = mysqli_query($mysqli, "
             
             <!-- Banner Carousel -->
             <section class="banner-section">
-                <div class="banner-carousel" id="bannerCarousel">
+                <div class="banner-carousel">
                     <div class="banner-slide active">
                         <div class="banner-content">
                             <h2>💼 Solusi Elektronik Kantor</h2>
@@ -168,67 +199,44 @@ $queryProduk = mysqli_query($mysqli, "
                 <div class="banner-dots" id="bannerDots"></div>
             </section>
 
-            <!-- KATEGORI ELEKTRONIK (FITUR FILTER PHP) -->
+            <!-- KATEGORI ELEKTRONIK -->
             <section class="quick-categories">
                 <h2 class="section-title">Kategori Elektronik</h2>
                 <div class="category-grid">
-                    
-                    <!-- Link Reset -->
                     <a href="beranda.php" class="category-link">
                         <div class="category-item <?= empty($selectedCategory) ? 'active' : '' ?>">
-                            <div class="category-icon">🏠</div>
-                            <span>Semua</span>
+                            <div class="category-icon">🏠</div><span>Semua</span>
                         </div>
                     </a>
-
-                    <!-- Link Kategori Laptop -->
                     <a href="?category=Laptop" class="category-link">
                         <div class="category-item <?= strtolower($selectedCategory) == 'laptop' ? 'active' : '' ?>">
-                            <div class="category-icon">💻</div>
-                            <span>Laptop</span>
+                            <div class="category-icon">💻</div><span>Laptop & PC</span>
                         </div>
                     </a>
-
-                    <a href="?category=Printer" class="category-link">
-                        <div class="category-item <?= strtolower($selectedCategory) == 'printer' ? 'active' : '' ?>">
-                            <div class="category-icon">🖨️</div>
-                            <span>Printer</span>
+                    <a href="?category=Office" class="category-link">
+                        <div class="category-item <?= strtolower($selectedCategory) == 'office' ? 'active' : '' ?>">
+                            <div class="category-icon">🖨️</div><span>Office</span>
                         </div>
                     </a>
-
                     <a href="?category=Smartphone" class="category-link">
-                        <div class="category-item <?= (strtolower($selectedCategory) == 'smartphone' || strtolower($selectedCategory) == 'mobile') ? 'active' : '' ?>">
-                            <div class="category-icon">📱</div>
-                            <span>Handphone</span>
+                        <div class="category-item <?= strtolower($selectedCategory) == 'smartphone' ? 'active' : '' ?>">
+                            <div class="category-icon">📱</div><span>Handphone</span>
                         </div>
                     </a>
-
-                    <a href="?category=Monitor" class="category-link">
-                        <div class="category-item <?= strtolower($selectedCategory) == 'monitor' ? 'active' : '' ?>">
-                            <div class="category-icon">🖥️</div>
-                            <span>Monitor</span>
+                    <a href="?category=Peripheral" class="category-link">
+                        <div class="category-item <?= strtolower($selectedCategory) == 'peripheral' ? 'active' : '' ?>">
+                            <div class="category-icon">⌨️</div><span>Peripheral</span>
                         </div>
                     </a>
-
-                    <a href="?category=Keyboard" class="category-link">
-                        <div class="category-item <?= (strtolower($selectedCategory) == 'keyboard' || strtolower($selectedCategory) == 'peripheral') ? 'active' : '' ?>">
-                            <div class="category-icon">⌨️</div>
-                            <span>Aksesoris</span>
-                        </div>
-                    </a>
-
                     <a href="?category=Jaringan" class="category-link">
-                        <div class="category-item <?= (strtolower($selectedCategory) == 'jaringan' || strtolower($selectedCategory) == 'network') ? 'active' : '' ?>">
-                            <div class="category-icon">📡</div>
-                            <span>Jaringan</span>
+                        <div class="category-item <?= strtolower($selectedCategory) == 'jaringan' ? 'active' : '' ?>">
+                            <div class="category-icon">📡</div><span>Jaringan</span>
                         </div>
                     </a>
-
                 </div>
             </section>
 
-            <!-- REKOMENDASI PRODUK (Sekarang ada isinya) -->
-            <!-- Disembunyikan kalau lagi filter kategori biar fokus -->
+            <!-- REKOMENDASI PRODUK -->
             <?php if(empty($selectedCategory) && empty($keyword)): ?>
             <section class="flash-sale-section">
                 <div class="section-header">
@@ -272,7 +280,7 @@ $queryProduk = mysqli_query($mysqli, "
                             <?php 
                                 $img = (!empty($row['image']) && file_exists("../uploads/".$row['image'])) ? "../uploads/".$row['image'] : "https://placehold.co/400x300?text=".urlencode($row['name']);
                             ?>
-                            <div class="product-card">
+                            <div class="product-card"> <a href="detail.php?id=<?= $row['product_id'] ?>">
                                 <img src="<?= $img ?>" class="card-img-top" alt="<?= htmlspecialchars($row['name']) ?>">
                                 <div class="card-body">
                                     <span class="p-cat"><?= htmlspecialchars($row['category_name']) ?></span>
@@ -280,9 +288,11 @@ $queryProduk = mysqli_query($mysqli, "
                                     <p style="font-size:12px; color:#666; margin-bottom:10px;"><?= substr($row['specifications'], 0, 40) ?>...</p>
                                     <div class="p-price">Rp <?= number_format($row['price'], 0, ',', '.') ?></div>
                                     <div class="p-stock">Stok: <?= $row['stock'] ?></div>
+                                    </a>
                                     <div style="margin-top:auto;">
-                                        <button class="btn-card" onclick="addToCart(<?= $row['product_id'] ?>)" style="background:#28a745; margin-bottom:5px;">+ Keranjang</button>
-                                        <a href="../detail/detail.php?id=<?= $row['product_id'] ?>" class="btn-card" style="background:#0056b3;">Detail</a>
+                                        <!-- Tombol Pemicu Toast -->
+                                        <button class="btn-card" onclick="addToCart(<?= $row['product_id'] ?>, '<?= addslashes($row['name']) ?>')" style="background:#28a745; margin-bottom:5px;">+ Keranjang</button>
+                                        <a href="../detail/detail.php?id=<?= $row['product_id'] ?>" class="btn-card" style="background:#007bff;">Beli Sekarang</a>
                                     </div>
                                 </div>
                             </div>
@@ -296,7 +306,7 @@ $queryProduk = mysqli_query($mysqli, "
         </div>
     </main>
 
-    <!-- Footer & Scripts (Sama seperti template Anda) -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-section"><h3>netofffice</h3><p>Marketplace B2B Elektronik.</p></div>
@@ -304,13 +314,53 @@ $queryProduk = mysqli_query($mysqli, "
         <div class="footer-bottom"><p>&copy; 2025 netofffice.</p></div>
     </footer>
 
-    <script src="beranda.js"></script>
+    <script src="beranda.js" defer></script>
+    
+    <!-- JAVASCRIPT NOTIFIKASI & KERANJANG -->
     <script>
-        function addToCart(id) {
-            alert("Produk ID " + id + " ditambahkan ke keranjang.");
+        // Fungsi Membuat Toast Notifikasi
+        function showToast(productName) {
+            const container = document.getElementById('toast-container');
+            
+            // Buat elemen notifikasi baru
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            // Isi HTML notifikasi
+            toast.innerHTML = `
+                <div class="toast-icon">✅</div>
+                <div class="toast-content">
+                    <span class="toast-title">Berhasil!</span>
+                    <span class="toast-msg"><b>${productName}</b> masuk keranjang.</span>
+                </div>
+            `;
+            
+            // Masukkan ke dalam container
+            container.appendChild(toast);
+            
+            // Hapus otomatis setelah 3 detik
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Fungsi Tambah Keranjang
+        function addToCart(id, name) {
+            // 1. Update Badge Angka Keranjang
             let badge = document.getElementById('cartCount');
-            badge.innerText = parseInt(badge.innerText) + 1;
+            if(badge) {
+                let currentCount = parseInt(badge.innerText);
+                badge.innerText = currentCount + 1;
+            }
+            
+            // 2. Tampilkan Animasi Toast
+            showToast(name);
+            
+            // 3. Kirim data ke backend (Silent Request) agar masuk Session
+            // Pastikan path aksi_keranjang.php sesuai
+            fetch('../keranjang/aksi_keranjang.php?act=tambah&id=' + id);
         }
     </script>
+
 </body>
 </html>

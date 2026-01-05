@@ -2,20 +2,7 @@
 session_start();
 
 // --- KONEKSI DATABASE ---
-$mysqli = null;
-if (file_exists('test.php')) {
-    include_once("test.php");
-} elseif (file_exists('../koneksi.php')) {
-    include_once("../koneksi.php");
-    if (isset($koneksi)) $mysqli = $koneksi;
-} else {
-    // Fallback koneksi
-    $mysqli = mysqli_connect("localhost", "root", "", "netofffice_db");
-}
-
-if (!$mysqli) {
-    die("Koneksi gagal. Cek file koneksi.");
-}
+include_once("../login/test.php");
 
 $isLoggedIn = isset($_SESSION['nama']);
 
@@ -62,69 +49,44 @@ $queryProduk = mysqli_query($mysqli, "
     ORDER BY p.created_at DESC
 ");
 ?>
+<?php
+$totalQty = 0;
+
+if (isset($_SESSION['keranjang']) && !empty($_SESSION['keranjang'])) {
+    $ids = array_keys($_SESSION['keranjang']);
+    $ids_string = implode(',', $ids);
+
+    if (!empty($ids_string)) {
+        $query = "SELECT * FROM products WHERE product_id IN ($ids_string)";
+        $result = mysqli_query($mysqli, $query); // Pakai $mysqli yang sudah didefinisikan
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $id = $row['product_id'];
+            $qty = $_SESSION['keranjang'][$id];
+            
+            $subtotal = $row['price'] * $qty;
+            
+            $row['qty'] = $qty;
+            $row['subtotal'] = $subtotal;
+            $cartItems[] = $row;
+
+    
+            $totalQty += $qty;
+        }
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>netofffice - Beranda</title>
+    <title>netoffice - Beranda</title>
     <link rel="stylesheet" href="beranda.css">
     
     <style>
-        /* --- CSS Notifikasi (Toast) --- */
-        #toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
 
-        .toast {
-            background-color: #fff;
-            color: #333;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 280px;
-            border-left: 5px solid #28a745; /* Garis hijau di kiri */
-            animation: slideIn 0.3s ease-out, fadeOut 0.5s 2.5s forwards;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 14px;
-        }
-
-        .toast-icon { font-size: 18px; }
-        .toast-content { display: flex; flex-direction: column; }
-        .toast-title { font-weight: bold; margin-bottom: 2px; }
-        .toast-msg { color: #666; font-size: 13px; }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes fadeOut {
-            to { opacity: 0; transform: translateY(-10px); pointer-events: none; }
-        }
-
-        /* CSS Tambahan Kategori & Card (Sama seperti sebelumnya) */
-        .category-link { text-decoration: none; color: inherit; display: block; }
-        .category-item.active { background-color: #e3f2fd; border: 1px solid #0056b3; }
-        .product-card { background: white; border: 1px solid #eee; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; }
-        .product-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateY(-3px); }
-        .card-img-top { width: 100%; height: 180px; object-fit: cover; background: #f9f9f9; }
-        .card-body { padding: 15px; display: flex; flex-direction: column; flex: 1; }
-        .btn-card { display: block; width: 100%; padding: 10px; background: #0056b3; color: white; text-align: center; border-radius: 5px; text-decoration: none; margin-top: 10px; border: none; cursor: pointer; }
-        .btn-card:hover { background: #004494; }
-        .p-cat { font-size: 11px; text-transform: uppercase; color: #888; }
-        .p-name { font-size: 16px; font-weight: bold; margin: 5px 0; color: #333; }
-        .p-price { font-size: 18px; color: #0056b3; font-weight: bold; margin-top: auto; }
-        .p-stock { font-size: 12px; color: #28a745; margin-bottom: 10px; }
     </style>
 </head>
 
@@ -137,7 +99,7 @@ $queryProduk = mysqli_query($mysqli, "
     <div class="top-bar">
         <div class="container top-bar-content">
             <div class="top-left">
-                <span class="tagline">netofffice · B2B Elektronik Kantor</span>
+                <span class="tagline">netoffice · B2B Elektronik Kantor</span>
             </div>
             <div class="top-right">
                 <div class="notif-wrapper">
@@ -160,7 +122,7 @@ $queryProduk = mysqli_query($mysqli, "
     <!-- Main Header -->
     <header class="main-header">
         <div class="container header-content">
-            <div class="logo">netofffice</div>
+            <div class="logo">netoffice</div>
             
             <form action="" method="GET" class="search-container">
                 <!-- Input hidden agar saat cari, kategori tetap terpilih (opsional) -->
@@ -168,14 +130,14 @@ $queryProduk = mysqli_query($mysqli, "
                     <input type="hidden" name="category" value="<?= htmlspecialchars($selectedCategory) ?>">
                 <?php endif; ?>
                 
-                <input type="text" name="keyword" id="searchInput" placeholder="Cari di netofffice..." value="<?= htmlspecialchars($keyword) ?>">
+                <input type="text" name="keyword" id="searchInput" placeholder="Cari di netoffice..." value="<?= htmlspecialchars($keyword) ?>">
                 <button type="submit" class="search-btn">🔍</button>
             </form>
             
             <div class="header-actions">
                 <a href="../pesanan/pesanan.php" class="orders-link">📦 Pesanan</a>
                 <a href="../profil/profile.php" class="profile-link">👤 Profil</a>
-                <a href="../keranjang/keranjang.php" class="cart-icon">🛒 <span id="cartCount" class="badge">0</span></a>
+                <a href="../keranjang/keranjang.php" class="cart-icon">🛒 <span id="cartCount" class="badge"><?= $totalQty ?></span></a>
             </div>
         </div>
     </header>
@@ -309,9 +271,9 @@ $queryProduk = mysqli_query($mysqli, "
     <!-- Footer -->
     <footer class="footer">
         <div class="container footer-content">
-            <div class="footer-section"><h3>netofffice</h3><p>Marketplace B2B Elektronik.</p></div>
+            <div class="footer-section"><h3>netoffice</h3><p>Marketplace B2B Elektronik.</p></div>
         </div>
-        <div class="footer-bottom"><p>&copy; 2025 netofffice.</p></div>
+        <div class="footer-bottom"><p>&copy; 2025 netoffice.</p></div>
     </footer>
 
     <script src="beranda.js" defer></script>
@@ -320,7 +282,7 @@ $queryProduk = mysqli_query($mysqli, "
     <script>
         // Fungsi Membuat Toast Notifikasi
         function showToast(productName) {
-            const container = document.getElementById('toast-container');
+            const container = document.getElementById('toast-container'); 
             
             // Buat elemen notifikasi baru
             const toast = document.createElement('div');

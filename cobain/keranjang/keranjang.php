@@ -72,7 +72,7 @@ $isLoggedIn = isset($_SESSION['nama']);
         </div>
     </header>
 
-    <div class="container">
+    <div class="container"> 
         <div class="content">
             <section class="cart-section">
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px;">

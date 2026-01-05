@@ -106,7 +106,7 @@ $avatar = $user['avatar'] ?? 'default-avatar.png'; // Fallback avatar
 
                 <div class="sidebar-item seller-menu">
                     <span class="menu-icon">🏪</span> 
-                    <a href="../seller/index.php" style="color: #EE4D2D; font-weight: bold;">Toko Saya</a>
+                    <a href="../seller/dashboard_seller.php" style="color: #EE4D2D; font-weight: bold;">Toko Saya</a>
                 </div>
             </nav>
         </aside>

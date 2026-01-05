@@ -904,3 +904,57 @@ a {
         }
         .btn-card:hover { background-color: #004494; }
         .empty-message { text-align: center; color: #666; padding: 20px; grid-column: 1 / -1; }
+
+                /* --- CSS Notifikasi (Toast) --- */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background-color: #fff;
+            color: #333;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 280px;
+            border-left: 5px solid #28a745; /* Garis hijau di kiri */
+            animation: slideIn 0.3s ease-out, fadeOut 0.5s 2.5s forwards;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+        }
+
+        .toast-icon { font-size: 18px; }
+        .toast-content { display: flex; flex-direction: column; }
+        .toast-title { font-weight: bold; margin-bottom: 2px; }
+        .toast-msg { color: #666; font-size: 13px; }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+        }
+
+        /* CSS Tambahan Kategori & Card (Sama seperti sebelumnya) */
+        .category-link { text-decoration: none; color: inherit; display: block; }
+        .category-item.active { background-color: #e3f2fd; border: 1px solid #0056b3; }
+        .product-card { background: white; border: 1px solid #eee; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; }
+        .product-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateY(-3px); }
+        .card-img-top { width: 100%; height: 180px; object-fit: cover; background: #f9f9f9; }
+        .card-body { padding: 15px; display: flex; flex-direction: column; flex: 1; }
+        .btn-card { display: block; width: 100%; padding: 10px; background: #0056b3; color: white; text-align: center; border-radius: 5px; text-decoration: none; margin-top: 10px; border: none; cursor: pointer; }
+        .btn-card:hover { background: #004494; }
+        .p-cat { font-size: 11px; text-transform: uppercase; color: #888; }
+        .p-name { font-size: 16px; font-weight: bold; margin: 5px 0; color: #333; }
+        .p-price { font-size: 18px; color: #0056b3; font-weight: bold; margin-top: auto; }
+        .p-stock { font-size: 12px; color: #28a745; margin-bottom: 10px; }

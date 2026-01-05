@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) && !isset($_SESSION['nama'])) {
     exit();
 }
 
-// 3. CEK KERANJANG
+// 3. CEK KERANJANG 
 if (empty($_SESSION['keranjang'])) {
     header("Location: ../beranda/beranda.php");
     exit();
@@ -45,26 +45,10 @@ if (!empty($ids)) {
     <title>Pembayaran - netofffice</title>
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="checkout.css">
     
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f8; margin: 0; color:#333; }
-        .container { max-width: 1000px; margin: 30px auto; display: flex; gap: 30px; padding: 0 20px; }
-        
-        .checkout-form { flex: 2; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; }
-        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
-        
-        .order-summary { flex: 1; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); height: fit-content; }
-        .summary-item { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; color: #555; }
-        .total-row { display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 2px dashed #eee; font-weight: bold; font-size: 18px; color: #0056b3; }
-        
-        .btn-bayar { background: #0056b3; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 20px; transition: 0.3s; }
-        .btn-bayar:hover { background: #004494; }
-        .btn-bayar:disabled { background: #ccc; cursor: not-allowed; }
-        
-        .back-link { text-decoration: none; color: #666; font-size: 14px; display: block; margin-bottom: 15px; }
-        h2 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+
     </style>
 </head>
 <body>
@@ -145,7 +129,6 @@ if (!empty($ids)) {
 
 <!-- SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     // Set total harga
     document.getElementById('total_hidden').value = "<?= $totalBelanja ?>";

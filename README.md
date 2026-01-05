@@ -1,2 +1,0 @@
-# P-inpo
-Challange sjk

@@ -31,14 +31,7 @@ if (count($whereClauses) > 0) {
 
 // --- QUERY UTAMA ---
 
-// A. Query Rekomendasi (Stok Terbanyak, abaikan filter biar tetap muncul)
-$queryRekomendasi = mysqli_query($mysqli, "
-    SELECT p.*, c.name AS category_name
-    FROM products p
-    LEFT JOIN categories c ON p.category_id = c.category_id
-    ORDER BY p.stock DESC
-    LIMIT 4
-");
+
 
 // B. Query Produk (Dengan Filter)
 $queryProduk = mysqli_query($mysqli, "
@@ -198,34 +191,6 @@ if (isset($_SESSION['keranjang']) && !empty($_SESSION['keranjang'])) {
                 </div>
             </section>
 
-            <!-- REKOMENDASI PRODUK -->
-            <?php if(empty($selectedCategory) && empty($keyword)): ?>
-            <section class="flash-sale-section">
-                <div class="section-header">
-                    <h2 class="section-title">✨ Rekomendasi Produk</h2>
-                </div>
-                <div class="product-grid" id="flashSaleProducts">
-                    <?php if (mysqli_num_rows($queryRekomendasi) > 0): ?>
-                        <?php while($row = mysqli_fetch_assoc($queryRekomendasi)): ?>
-                            <?php 
-                                $img = (!empty($row['image']) && file_exists("../uploads/".$row['image'])) ? "../uploads/".$row['image'] : "https://placehold.co/400x300?text=".urlencode($row['name']);
-                            ?>
-                            <div class="product-card">
-                                <img src="<?= $img ?>" class="card-img-top" alt="<?= htmlspecialchars($row['name']) ?>">
-                                <div class="card-body">
-                                    <span class="p-cat"><?= htmlspecialchars($row['category_name']) ?></span>
-                                    <h3 class="p-name"><?= htmlspecialchars($row['name']) ?></h3>
-                                    <div class="p-price">Rp <?= number_format($row['price'], 0, ',', '.') ?></div>
-                                    <div class="p-stock">Stok: <?= $row['stock'] ?></div>
-                                    <a href="../detail/detail.php?id=<?= $row['product_id'] ?>" class="btn-card">Lihat Detail</a>
-                                </div>
-                            </div>
-                        <?php endwhile; ?>
-                    <?php endif; ?>
-                </div>
-            </section>
-            <?php endif; ?>
-
             <!-- PRODUK UTAMA (Hasil Filter Muncul Disini) -->
             <section class="products-section">
                 <h2 class="section-title" id="productTitle">
@@ -254,7 +219,6 @@ if (isset($_SESSION['keranjang']) && !empty($_SESSION['keranjang'])) {
                                     <div style="margin-top:auto;">
                                         <!-- Tombol Pemicu Toast -->
                                         <button class="btn-card" onclick="addToCart(<?= $row['product_id'] ?>, '<?= addslashes($row['name']) ?>')" style="background:#28a745; margin-bottom:5px;">+ Keranjang</button>
-                                        <a href="../detail/detail.php?id=<?= $row['product_id'] ?>" class="btn-card" style="background:#007bff;">Beli Sekarang</a>
                                     </div>
                                 </div>
                             </div>
@@ -279,50 +243,5 @@ if (isset($_SESSION['keranjang']) && !empty($_SESSION['keranjang'])) {
     <script src="beranda.js" defer></script>
     
     <!-- JAVASCRIPT NOTIFIKASI & KERANJANG -->
-    <script>
-        // Fungsi Membuat Toast Notifikasi
-        function showToast(productName) {
-            const container = document.getElementById('toast-container'); 
-            
-            // Buat elemen notifikasi baru
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            
-            // Isi HTML notifikasi
-            toast.innerHTML = `
-                <div class="toast-icon">✅</div>
-                <div class="toast-content">
-                    <span class="toast-title">Berhasil!</span>
-                    <span class="toast-msg"><b>${productName}</b> masuk keranjang.</span>
-                </div>
-            `;
-            
-            // Masukkan ke dalam container
-            container.appendChild(toast);
-            
-            // Hapus otomatis setelah 3 detik
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-
-        // Fungsi Tambah Keranjang
-        function addToCart(id, name) {
-            // 1. Update Badge Angka Keranjang
-            let badge = document.getElementById('cartCount');
-            if(badge) {
-                let currentCount = parseInt(badge.innerText);
-                badge.innerText = currentCount + 1;
-            }
-            
-            // 2. Tampilkan Animasi Toast
-            showToast(name);
-            
-            // 3. Kirim data ke backend (Silent Request) agar masuk Session
-            // Pastikan path aksi_keranjang.php sesuai
-            fetch('../keranjang/aksi_keranjang.php?act=tambah&id=' + id);
-        }
-    </script>
-
 </body>
 </html>
